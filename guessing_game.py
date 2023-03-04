@@ -1,5 +1,9 @@
 import random
 
+"""
+Note: Chapter 3 answers are written as comments below the script
+"""
+
 def game(prompt):
     range_num = 0
     while range_num <= 0: # a while loop that ends until a positive int is given as a range
@@ -8,41 +12,41 @@ def game(prompt):
         except:
             continue
             # range_num = 100
+    guessed_num = None
+    magic_num = None
+    
     match prompt:
         case "computer guess":
-            number = int(input(f"pick a whole number between 0-{range_num}: "))
-            if number > range_num:
-                quit
-            guessed = None
-            for i in range(10):
-                guessed = (random.randrange(range_num + 1))
-                if guessed == number:
-                    print(f"Attempt {i + 1}: the computer guessed {guessed}")
-                    print("matched")
-                    break
-                else:
-                    print(f"Attempt {i + 1}: the computer guessed {guessed}")
-                    if (i + 1) == 10:
-                        print("computer failed to guess the number")
-                    
-
+            magic_num = int(input(f"pick a whole number between 0-{range_num}: "))
+            user_prompt = ""
+            min_value = 1
+            max_value = range_num
+            while True:
+                guessed_num = (random.randint(min_value, max_value))
+                user_prompt = input(f"Computer guessed {guessed_num}. Is it too high, too low, or correct? (h, l, c): ")
+                match user_prompt:
+                    case "c": 
+                        break
+                    case "h":
+                        max_value = guessed_num - 1
+                    case "l":
+                        min_value = guessed_num + 1 
+            print("computer successfully guessed the number")
 
         case "user guess": 
-            diff_number = random.randrange(range_num)
-            diff_guessed = None
+            magic_num = random.randrange(range_num)
+            #diff_guessed = None
             print(f"the number is between 0-{range_num} ")
-            while diff_guessed != diff_number:
+            while guessed_num != magic_num:
                 try:
-                    diff_guessed = int(input("guess the number: "))
+                    guessed_num = int(input("guess the number: "))
                 except:
                     continue # loop again if input not given
-                if diff_guessed > diff_number:
+                if guessed_num > magic_num:
                     print("too high")
-                elif diff_guessed < diff_number:
+                elif guessed_num < magic_num:
                     print("too low")
             print("success")
-    
-
 
     match input("restart program? (y/any different button to quit): "):
         case "y": a()
@@ -74,7 +78,7 @@ Chapter 3 Answers
     Ex. 
         def function_name():
             pass #replace pass with your block of code
-            
+
 4. The function represents a block of code written for a specific purpose. A function call however
    is essentially you telling the program to USE that code
 ***5. There is only ONE global scope. There are multiple local scopes that can be present at once however.
@@ -98,13 +102,5 @@ Chapter 3 Answers
 13.Errorhandling keeps a program running even when it gets an error (exception), by running a different block of code using the try and except keywords
 14.The try clause runs a block of code under it and makes sure it doesn't generate an error. when an error pops up however, it tests out what's under the except clause.
    these two are great if you want to keep a program running even when an error happens
-
-
-
-
-
-
-
-
 
 """
