@@ -13,16 +13,23 @@ def game(prompt):
             number = int(input(f"pick a whole number between 0-{range_num}: "))
             if number > range_num:
                 quit
-            guessed = (random.randrange(range_num + 1)) # Program generates value a maximum of range_num - 1. The + 1 in the randrange() was used to counter that
-            print(f"the computer guessed {guessed}")
-            if guessed != number:
-                print("the numbers don't match, you won!")
-            else:
-                print("the numbers matched, you lose!")
+            guessed = None
+            for i in range(10):
+                guessed = (random.randrange(range_num + 1))
+                if guessed == number:
+                    print(f"Attempt {i + 1}: the computer guessed {guessed}")
+                    print("matched")
+                    break
+                else:
+                    print(f"Attempt {i + 1}: the computer guessed {guessed}")
+                    if (i + 1) == 10:
+                        print("computer failed to guess the number")
+                    
+
 
         case "user guess": 
             diff_number = random.randrange(range_num)
-            diff_guessed = 0
+            diff_guessed = None
             print(f"the number is between 0-{range_num} ")
             while diff_guessed != diff_number:
                 try:
@@ -49,3 +56,55 @@ def a():
         case "q": quit
         case _: game("n")
 a()
+
+
+
+"""
+Chapter 3 Answers
+--------------------
+1. The benefits of a function
+    a. Helps reduce the need of copy pasting
+    b. Use less lines to write a program
+    c. Makes code cleaner looking
+2. Executing a function
+    It is only executed when you call it. It is never executed right when it is
+    given a meaning- *defined* in this case
+3. Defining a function
+    Use the keyword "def" followed by function name and parantheses, then end with a colon
+    Ex. 
+        def function_name():
+            pass #replace pass with your block of code
+            
+4. The function represents a block of code written for a specific purpose. A function call however
+   is essentially you telling the program to USE that code
+***5. There is only ONE global scope. There are multiple local scopes that can be present at once however.
+6. A local scope is created whenever a function is called. The local scope is destroyed along with the variables in it once the function returns a value
+7. A return value can be described as certain information given from a function. 
+
+   Return values can also be used in expressions
+      Ex. 
+      def cube(num):
+         return num * num * num
+      some_number = 3
+      print(cube(sum_number) + 4) 
+      Inside the print statement, we are adding 4 to a function call. This works because we are adding 4 to whatever value is returned to the function call
+
+8. If you don't return anything, the function on default returns none
+9. To give a function the ability to edit a global function, write the global keyword followed by the name of the global variable wanted
+10.The none value represents *no value* or an empty value, similar to Null. It is a "nonetype".
+***11.
+12.After importing spam:
+   spam.bacon()
+13.Errorhandling keeps a program running even when it gets an error (exception), by running a different block of code using the try and except keywords
+14.The try clause runs a block of code under it and makes sure it doesn't generate an error. when an error pops up however, it tests out what's under the except clause.
+   these two are great if you want to keep a program running even when an error happens
+
+
+
+
+
+
+
+
+
+"""
