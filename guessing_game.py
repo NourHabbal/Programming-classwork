@@ -14,23 +14,21 @@ def game(prompt):
             # range_num = 100
     guessed_num = None
     magic_num = None
-    
+
     match prompt:
         case "computer guess":
             magic_num = int(input(f"pick a whole number between 0-{range_num}: "))
             user_prompt = ""
+            ## This section is partly based off the original tutorial, mainly with the manipulation of min_value and max_value
             min_value = 1
             max_value = range_num
             while True:
                 guessed_num = (random.randint(min_value, max_value))
                 user_prompt = input(f"Computer guessed {guessed_num}. Is it too high, too low, or correct? (h, l, c): ")
                 match user_prompt:
-                    case "c": 
-                        break
-                    case "h":
-                        max_value = guessed_num - 1
-                    case "l":
-                        min_value = guessed_num + 1 
+                    case "c": break
+                    case "h": max_value = guessed_num - 1
+                    case "l": min_value = guessed_num + 1 
             print("computer successfully guessed the number")
 
         case "user guess": 
@@ -42,10 +40,8 @@ def game(prompt):
                     guessed_num = int(input("guess the number: "))
                 except:
                     continue # loop again if input not given
-                if guessed_num > magic_num:
-                    print("too high")
-                elif guessed_num < magic_num:
-                    print("too low")
+                if guessed_num > magic_num: print("too high")
+                elif guessed_num < magic_num: print("too low")
             print("success")
 
     match input("restart program? (y/any different button to quit): "):
@@ -61,6 +57,17 @@ def a():
         case _: game("n")
 a()
 
+
+"""
+I already know this ,w,
+
+I hope yous manage to make le game you planned for le jam from last weekend .u. 
+The assets you made imo should be used for it!
+ I actually only made the player and the other stuff was very bad LMAO
+
+
+ 
+"""
 
 
 """
@@ -81,7 +88,7 @@ Chapter 3 Answers
 
 4. The function represents a block of code written for a specific purpose. A function call however
    is essentially you telling the program to USE that code
-***5. There is only ONE global scope. There are multiple local scopes that can be present at once however.
+***5. There is only ONE global scope. There are multiple local scopes that can be present at once however (??)
 6. A local scope is created whenever a function is called. The local scope is destroyed along with the variables in it once the function returns a value
 7. A return value can be described as certain information given from a function. 
 
@@ -90,7 +97,7 @@ Chapter 3 Answers
       def cube(num):
          return num * num * num
       some_number = 3
-      print(cube(sum_number) + 4) 
+      print(cube(some_number) + 4) 
       Inside the print statement, we are adding 4 to a function call. This works because we are adding 4 to whatever value is returned to the function call
 
 8. If you don't return anything, the function on default returns none
