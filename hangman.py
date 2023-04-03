@@ -1,9 +1,6 @@
 import random
 import string
-from hangman_words import word_pasta
-from hangman_words import word_all
-from hangman_words import word_people
-from hangman_words import word_objects 
+from hangman_words import word_pasta, word_all, word_people, word_objects
 
 #MODIFICATION: ADDED THEMED WORD SETS ^^^
 
