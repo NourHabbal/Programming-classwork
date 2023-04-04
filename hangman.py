@@ -1,6 +1,11 @@
 import random
 import string
+import time
 from hangman_words import word_pasta, word_all, word_people, word_objects
+
+motivate = ["good job!", "keep it up!", "Spaghetti cheeseballs"]
+depression = ["thats incorrect", "no", "that doesn't work out right..."]
+
 
 #MODIFICATION: ADDED THEMED WORD SETS ^^^
 
@@ -43,22 +48,31 @@ def start_modded():
 
 
         letter_guessed = input("guess a letter: ").upper()
+        time.sleep(2)
         if letter_guessed in alphabet - already_used:
+            
             already_used.add(letter_guessed)
-            print("added to list of guessed letters")
+            if letter_guessed not in magic_word_letters:
+                print(random.choice(depression))
             # add to the list of guessed letters
 
             if letter_guessed in magic_word_letters:
-                magic_word_letters.remove(letter_guessed)
-                print("you got one of the letters!")
+                magic_word_letters.remove(letter_guessed) 
+                print(random.choice(motivate))
             # if this guessed letter is one of the magic word's letters,remove that letter from it's list
     
         elif letter_guessed in already_used:
-            print("this character has already been used. Try a different character")
+            print("you already guessed this character")
 
         else:
-            print("the word does not contain this letter")
+            pass
+        print("\n")
     print(f"you got the the word: {magic_word}")
+    match input("would you like to play again? | Yes [1] | No [Press any button] | : "):
+        case 1:
+            start_modded()
+        case _:
+            quit
 
 start_modded()
 
