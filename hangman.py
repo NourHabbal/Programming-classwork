@@ -51,11 +51,11 @@ depression = ["thats incorrect", "no", "that doesn't work out right..."]
 
 def get_valid_word(set):
     word = random.choice(set)
-    while "-" in word or ' ' in word:
+    while "-" in word or ' ' in word or (word == "rai" or word == "zimmerman"):
         word = random.choice(set)
     return word
 
-    #this function may not have been necessary as all my words have no spaces or "-"
+    #ensure this function has no spaces or "-", OR is equal to "rai" or "zimmerman", as those are not to be chosen..? (according to the powerpoint)
 
 
 def start_modded():
@@ -82,7 +82,7 @@ def start_modded():
     while len(magic_word_letters) > 0 and counter <= 6:
         print(f"used letters: {already_used}")
         print(hangman_picture[counter])
-        word_list = [letter if letter in already_used else '-' for letter in magic_word] 
+        word_list = [letter if letter in already_used else '-' for letter in magic_word] # how does this work?
         print("Current word: ", ' '.join(word_list))
 
 
