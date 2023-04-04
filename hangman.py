@@ -3,6 +3,44 @@ import string
 import time
 from hangman_words import word_pasta, word_all, word_people, word_objects
 
+
+hangman_picture = ['''
+    +---+
+        |
+        |
+        |
+       ===''', '''
+    +---+
+    O   |
+        |
+        |
+       ===''', '''
+    +---+
+    O   |
+    |   |
+        |
+       ===''', '''
+    +---+
+    O   |
+   /|   |
+        |
+       ===''', '''
+    +---+
+    O   |
+   /|\  |
+        |
+       ===''', '''
+    +---+
+    O   |
+   /|\  |
+   /    |
+       ===''', '''
+    +---+
+    O   |
+   /|\  |
+   / \  |
+       ===''']
+
 motivate = ["good job!", "keep it up!", "Spaghetti cheeseballs"]
 depression = ["thats incorrect", "no", "that doesn't work out right..."]
 
@@ -40,9 +78,10 @@ def start_modded():
     magic_word_letters = set(magic_word) #has no repeated letters 
     alphabet = set(string.ascii_uppercase)
     already_used = set() #what has been already used
-
-    while len(magic_word_letters) > 0:
+    counter = 0
+    while len(magic_word_letters) > 0 and counter <= 6:
         print(f"used letters: {already_used}")
+        print(hangman_picture[counter])
         word_list = [letter if letter in already_used else '-' for letter in magic_word] 
         print("Current word: ", ' '.join(word_list))
 
@@ -54,6 +93,7 @@ def start_modded():
             already_used.add(letter_guessed)
             if letter_guessed not in magic_word_letters:
                 print(random.choice(depression))
+                counter = counter + 1
             # add to the list of guessed letters
 
             if letter_guessed in magic_word_letters:
@@ -68,8 +108,13 @@ def start_modded():
             pass
         print("\n")
     print(f"you got the the word: {magic_word}")
-    match input("would you like to play again? | Yes [1] | No [Press any button] | : "):
-        case 1:
+    if counter >= 6:
+        print("you lost")
+    else:
+        print("you won!")
+        
+    match (input("would you like to play again? | Yes [1] | No [Press any button] | : ")):
+        case '1':
             start_modded()
         case _:
             quit
