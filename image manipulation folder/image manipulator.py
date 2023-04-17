@@ -24,6 +24,10 @@ def rotate_image():
     print("set to mode 5")
     end()
 
+def view_image():
+    print("set to mode 6")
+    end()
+
 def end():
     input_choice = 0
     print("\nchoice reset")
@@ -41,14 +45,15 @@ def end():
 
 def start_menu():
     input_choice = 0
-    while input_choice > 5 or input_choice < 1:
-        input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n\nSelect a value designated to a function: "))
+    while input_choice > 6 or input_choice < 1:
+        input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n[6] | view an image \n\nSelect a value designated to a function: "))
     # -----------------------------------------------------------
     if input_choice == 1: to_png()
     elif input_choice == 2: change_size()
     elif input_choice == 3: blur_image()
     elif input_choice == 4: black_white()
     elif input_choice == 5: rotate_image()
+    elif input_choice == 6: view_image()
     else: print("error 1"); return 1
 
 start_menu()
@@ -60,13 +65,13 @@ start_menu()
 """
 the project requirements:
 
-[png] // Every png file saved will be moved here
-[size 200] // every file saved with this thumbnail size will be sent here
-[size 400] // every file saved with this thumbnail size will be sent here
-[size 600] // every file saved with this thumbnail size will be sent here
-[rotated] // send every rotated file here
-[black white] // send every black/white file here
-No folder for blurred files
+[png] // Every png file saved will be moved here -- SET UP
+[size 200] // every file saved with this thumbnail size will be sent here -- SET UP
+[size 400] // every file saved with this thumbnail size will be sent here -- SET UP
+[size 600] // every file saved with this thumbnail size will be sent here -- SET UP
+[rotated] // send every rotated file here -- SET UP
+[black white] // send every black/white file here -- SET UP
+No folder for blurred files -- SET UP
 [custom change] // look at documentation and add a custom change with its folder
 Have option to view every edited image
 Have no errors for whatever the user inputs on runtime
