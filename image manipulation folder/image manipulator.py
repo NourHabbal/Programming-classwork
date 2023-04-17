@@ -35,13 +35,9 @@ def end():
     while input_choice > 2 or input_choice < 1:
         input_choice = int(input("would you like to continue image manipulating? \n[1] | yes \n[2] | no/quit \nselect a value: "))
     
-    if input_choice == 1:
-        start_menu()
-    elif input_choice == 2:
-        quit
-    else:
-        print("error 2")
-        return 2
+    if input_choice == 1: start_menu()
+    elif input_choice == 2: quit
+    else: print("error 2"); return 2
 
 def start_menu():
     input_choice = 0
