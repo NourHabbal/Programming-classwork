@@ -13,7 +13,7 @@ def jpeg_to_png(): #DONE
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[1] | yes \n[2/any] | no \ninput: ")
         match error_prompt:
             case "1": jpeg_to_png
-            case _: quit
+            case _: quit()
 
     try:
         os.mkdir("image manipulation folder/png images")
@@ -63,20 +63,26 @@ def black_white():
     print("set to mode 4")
     end()
 
-def rotate_image():
+def rotate_image(): #DONE
+    try:
+        os.mkdir("image manipulation folder/rotated images")
+    except:
+        pass #pass anything if folder already exists
+    
     try: 
         file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
         image_rotate = Image.open("image manipulation folder/" + str(file_name))
-        #image_rotate = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
-        degree = None
-        while type(degree) is not int:
-            degree = int(input("how many degrees would you like to rotate this image?: "))
-        image_rotate.rotate(degree).save("image manipulation folder/" + file_name.replace(".jpeg", "(rotated).jpeg"))
     except:
-        print("error 3")
-        return 3
-
+        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
+        match error_prompt:
+            case "1": rotate_image()
+            case _: 
+                quit() #bug: if the parentheses are removed, it continues from here to ask how many degrees to rotate the image, despite not having the image detected
+    degree = None
+    while type(degree) is not int:
+        degree = int(input("how many degrees would you like to rotate this image?: "))
     
+    image_rotate.rotate(degree).save("image manipulation folder/rotated images/" + file_name.replace(".jpeg", "(rotated["+ str(degree) +"]).jpeg"))
     end()
 
 def view_image(): #DONE
@@ -87,7 +93,7 @@ def view_image(): #DONE
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[   1   ] | yes \n[2 / any] | no \ninput: ")
         match error_prompt:
             case "1": view_image
-            case _: quit
+            case _: quit()
     end()
 
 def end(): #DONE
@@ -97,9 +103,9 @@ def end(): #DONE
     input_choice = input("would you like to continue image manipulating? \n[ 1 ] | yes \n[any] | no/quit \nselect a value: ")
     match input_choice:
         case "1": start_menu()
-        case _: quit
+        case _: quit()
 
-def start_menu():
+def start_menu(): #DONE
     input_choice = 0
     while input_choice > 6 or input_choice < 1:
         input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n[6] | view an image \n\nSelect a value designated to a function: "))
@@ -122,18 +128,18 @@ start_menu()
 the project requirements:
 
 [png] // Every png file saved will be moved here ===================================================== DONE
-[size 200] // every file saved with this thumbnail size will be sent here -- SET UP
-[size 400] // every file saved with this thumbnail size will be sent here -- SET UP
-[size 600] // every file saved with this thumbnail size will be sent here -- SET UP
-[rotated] // send every rotated file here -- SET UP
+[size 200] // every file saved with this thumbnail size will be sent here -- SET UP -- in progress
+[size 400] // every file saved with this thumbnail size will be sent here -- SET UP -- in progress
+[size 600] // every file saved with this thumbnail size will be sent here -- SET UP -- in progress
+[rotated] // send every rotated file here ============================================================ DONE
 [black white] // send every black/white file here -- SET UP
 No folder for blurred files -- SET UP
 [custom change] // look at documentation and add a custom change with its folder
-Have option to view every edited image 
+Have option to view every edited image -------------- ?????
 Have no errors for whatever the user inputs on runtime
 MUST have unique variable and folder names. ESPECIALLY CODE ========================================= DONE
 BONUS: Have [hybrid] for pictures with multiple changes
-BONUS: Have the script build the folders for you when a new change type is created
+BONUS: Have the script build the folders for you when a new change type is created ---- in progress
 Expected inputs:
 
 what would you like to do? [ action | [1] ] [ action 2 | [2] ] [ etc... | [3] ] : input if error: invalid input. Try again > what would you like to do? [ action | [1] ] [ action 2 | [2] ] [ etc... | [3] ] : input_corrected if no folder: create folder [input] send to [input] else: send to [input]
