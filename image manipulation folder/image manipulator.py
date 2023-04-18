@@ -1,11 +1,24 @@
 from PIL import Image
+import os
 
 image1 = Image.open('image manipulation folder/bingus.jpeg')
 
 #image1.show()
 
-def to_png():
-    print("set to mode 1")
+def jpeg_to_png(): 
+    file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
+    image_old = Image.open("image manipulation folder/" + str(file_name))
+    try:
+        os.mkdir("image manipulation folder/png images")
+        #pass
+    except:
+        pass #don't do anything if there is already a "png images" folder
+    
+    try:
+        image_old.save("image manipulation folder/png images/" + (file_name.replace("jpeg", "png")))
+        #pass
+    except:
+        pass #don't do anything if the png file already exists
     end()
 
 def change_size():
@@ -25,7 +38,8 @@ def rotate_image():
     end()
 
 def view_image():
-    print("set to mode 6")
+    a = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
+    a.show()
     end()
 
 def end():
@@ -44,7 +58,7 @@ def start_menu():
     while input_choice > 6 or input_choice < 1:
         input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n[6] | view an image \n\nSelect a value designated to a function: "))
     # -----------------------------------------------------------
-    if input_choice == 1: to_png()
+    if input_choice == 1: jpeg_to_png()
     elif input_choice == 2: change_size()
     elif input_choice == 3: blur_image()
     elif input_choice == 4: black_white()
