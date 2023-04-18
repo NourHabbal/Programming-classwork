@@ -5,15 +5,22 @@ image1 = Image.open('image manipulation folder/bingus.jpeg')
 
 #image1.show()
 
-def jpeg_to_png(): 
+def jpeg_to_png(): #DONE
     file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
-    image_old = Image.open("image manipulation folder/" + str(file_name))
+    try:
+        image_old = Image.open("image manipulation folder/" + str(file_name))
+    except:
+        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[1] | yes \n[2/any] | no \ninput: ")
+        match error_prompt:
+            case "1": jpeg_to_png
+            case _: quit
+
     try:
         os.mkdir("image manipulation folder/png images")
         #pass
     except:
         pass #don't do anything if there is already a "png images" folder
-    
+
     try:
         image_old.save("image manipulation folder/png images/" + (file_name.replace("jpeg", "png")))
         #pass
@@ -21,8 +28,31 @@ def jpeg_to_png():
         pass #don't do anything if the png file already exists
     end()
 
-def change_size():
-    print("set to mode 2")
+def change_size(): # DO TOMORROW
+    thumb_200 = (200, 200)
+    thumb_400 = (400, 400)
+    thumb_600 = (600, 600)
+
+    image_size = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
+    image_size.show()
+    
+
+    size_choice : int = 0
+    while size_choice <= 0 and size_choice < 4:
+        size_choice = int(input("what thumbnail size would you like to change this to? \n\noptions: \n[1] | size 200 \n[2] | size 400 \n[3] | size 600"))
+        match size_choice:
+            case 1: 
+                image_size.thumbnail(thumb_200)
+                image_size.save("image manipulation folder/" + image_size.replace(".jpeg", "(200).png"))
+            case 2: 
+                image_size.thumbnail(thumb_400)
+                image_size.save("image manipulation folder/" + image_size.replace(".jpeg", "(400).png"))
+            case 3: 
+                image_size.thumbnail(thumb_600)
+                image_size.save("image manipulation folder/" + image_size.replace(".jpeg", "(600).png"))
+
+    #image_size.save("image manipulation folder/" + file_name.replace(".jpeg", "(200).png"))
+    
     end()
 
 def blur_image():
@@ -34,24 +64,40 @@ def black_white():
     end()
 
 def rotate_image():
-    print("set to mode 5")
+    try: 
+        file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
+        image_rotate = Image.open("image manipulation folder/" + str(file_name))
+        #image_rotate = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
+        degree = None
+        while type(degree) is not int:
+            degree = int(input("how many degrees would you like to rotate this image?: "))
+        image_rotate.rotate(degree).save("image manipulation folder/" + file_name.replace(".jpeg", "(rotated).jpeg"))
+    except:
+        print("error 3")
+        return 3
+
+    
     end()
 
-def view_image():
-    a = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
-    a.show()
+def view_image(): #DONE
+    try: 
+        image_view = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
+        image_view.show()
+    except:
+        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[   1   ] | yes \n[2 / any] | no \ninput: ")
+        match error_prompt:
+            case "1": view_image
+            case _: quit
     end()
 
-def end():
+def end(): #DONE
     input_choice = 0
     print("\nchoice reset")
     
-    while input_choice > 2 or input_choice < 1:
-        input_choice = int(input("would you like to continue image manipulating? \n[1] | yes \n[2] | no/quit \nselect a value: "))
-    
-    if input_choice == 1: start_menu()
-    elif input_choice == 2: quit
-    else: print("error 2"); return 2
+    input_choice = input("would you like to continue image manipulating? \n[ 1 ] | yes \n[any] | no/quit \nselect a value: ")
+    match input_choice:
+        case "1": start_menu()
+        case _: quit
 
 def start_menu():
     input_choice = 0
@@ -75,7 +121,7 @@ start_menu()
 """
 the project requirements:
 
-[png] // Every png file saved will be moved here -- SET UP
+[png] // Every png file saved will be moved here ===================================================== DONE
 [size 200] // every file saved with this thumbnail size will be sent here -- SET UP
 [size 400] // every file saved with this thumbnail size will be sent here -- SET UP
 [size 600] // every file saved with this thumbnail size will be sent here -- SET UP
@@ -83,9 +129,9 @@ the project requirements:
 [black white] // send every black/white file here -- SET UP
 No folder for blurred files -- SET UP
 [custom change] // look at documentation and add a custom change with its folder
-Have option to view every edited image
+Have option to view every edited image 
 Have no errors for whatever the user inputs on runtime
-MUST have unique variable and folder names. ESPECIALLY CODE
+MUST have unique variable and folder names. ESPECIALLY CODE ========================================= DONE
 BONUS: Have [hybrid] for pictures with multiple changes
 BONUS: Have the script build the folders for you when a new change type is created
 Expected inputs:
