@@ -28,29 +28,51 @@ def jpeg_to_png(): #DONE
         pass #don't do anything if the png file already exists
     end()
 
-def change_size(): # DO TOMORROW
+def change_size(): # DONE
     thumb_200 = (200, 200)
     thumb_400 = (400, 400)
     thumb_600 = (600, 600)
 
-    image_size = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
-    image_size.show()
+    try:
+        file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
+        image_size = Image.open("image manipulation folder/" + str(file_name))
+    except:
+        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
+        match error_prompt:
+            case "1": rotate_image()
+            case _: 
+                quit() #bug: if the parentheses are removed, it continues from here to ask how many degrees to rotate the image, despite not having the image detected
     
-
-    size_choice : int = 0
-    while size_choice <= 0 and size_choice < 4:
-        size_choice = int(input("what thumbnail size would you like to change this to? \n\noptions: \n[1] | size 200 \n[2] | size 400 \n[3] | size 600"))
+    size_choice = 0
+    while  size_choice != "1" and size_choice != "2" and size_choice != "3":
+        size_choice = (input("what thumbnail size would you like to change this to? \n\noptions: \n[1] | size 200 \n[2] | size 400 \n[3] | size 600"))
         match size_choice:
-            case 1: 
+            case "1": 
                 image_size.thumbnail(thumb_200)
-                image_size.save("image manipulation folder/" + image_size.replace(".jpeg", "(200).png"))
-            case 2: 
-                image_size.thumbnail(thumb_400)
-                image_size.save("image manipulation folder/" + image_size.replace(".jpeg", "(400).png"))
-            case 3: 
-                image_size.thumbnail(thumb_600)
-                image_size.save("image manipulation folder/" + image_size.replace(".jpeg", "(600).png"))
+                try:
+                    os.mkdir("image manipulation folder/size 200")
+                except:
+                    pass
 
+                image_size.save("image manipulation folder/size 200/" + file_name.replace(".jpeg", "(200).jpeg"))
+            case "2": 
+                image_size.thumbnail(thumb_400)
+                try:
+                    os.mkdir("image manipulation folder/size 400")
+                except:
+                    pass
+
+                image_size.save("image manipulation folder/size 400/" + file_name.replace(".jpeg", "(400).jpeg"))
+            case "3": 
+                image_size.thumbnail(thumb_600)
+                try:
+                    os.mkdir("image manipulation folder/size 600")
+                except:
+                    pass
+
+                image_size.save("image manipulation folder/size 600/" + file_name.replace(".jpeg", "(600).jpeg"))
+            case _:
+                print(image_size)
     #image_size.save("image manipulation folder/" + file_name.replace(".jpeg", "(200).png"))
     
     end()
@@ -60,7 +82,7 @@ def blur_image():
     end()
 
 def black_white():
-    print("set to mode 4")
+    
     end()
 
 def rotate_image(): #DONE
@@ -136,13 +158,15 @@ the project requirements:
 No folder for blurred files -- SET UP
 [custom change] // look at documentation and add a custom change with its folder
 Have option to view every edited image -------------- ?????
-Have no errors for whatever the user inputs on runtime
+Have no errors for whatever the user inputs on runtime 
 MUST have unique variable and folder names. ESPECIALLY CODE ========================================= DONE
-BONUS: Have [hybrid] for pictures with multiple changes
 BONUS: Have the script build the folders for you when a new change type is created ---- in progress
 Expected inputs:
 
-what would you like to do? [ action | [1] ] [ action 2 | [2] ] [ etc... | [3] ] : input if error: invalid input. Try again > what would you like to do? [ action | [1] ] [ action 2 | [2] ] [ etc... | [3] ] : input_corrected if no folder: create folder [input] send to [input] else: send to [input]
+
+
+
+BONUS: Have [hybrid] for pictures with multiple changes
 
 w at
 
