@@ -45,7 +45,7 @@ def change_size(): # DONE
     
     size_choice = 0
     while  size_choice != "1" and size_choice != "2" and size_choice != "3":
-        size_choice = (input("what thumbnail size would you like to change this to? \n\noptions: \n[1] | size 200 \n[2] | size 400 \n[3] | size 600"))
+        size_choice = (input("what thumbnail size would you like to change this to? \n\noptions: \n[1] | size 200 \n[2] | size 400 \n[3] | size 600\n\n input: "))
         match size_choice:
             case "1": 
                 image_size.thumbnail(thumb_200)
@@ -81,8 +81,25 @@ def blur_image():
     print("set to mode 3")
     end()
 
-def black_white():
-    
+def black_white(): #DONE
+    try:
+        file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
+        image_colorless = Image.open("image manipulation folder/" + str(file_name))
+    except:
+        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
+        match error_prompt:
+            case "1": black_white()
+            case _: 
+                quit() 
+    try:
+        os.mkdir("image manipulation folder/black-white images")
+    except:
+        pass 
+
+    try:
+        image_colorless.convert(mode= 'L').save("image manipulation folder/black-white images/" + (file_name.replace(".jpeg", "(colorless).jpeg")))
+    except:
+        pass 
     end()
 
 def rotate_image(): #DONE
@@ -150,11 +167,11 @@ start_menu()
 the project requirements:
 
 [png] // Every png file saved will be moved here ===================================================== DONE
-[size 200] // every file saved with this thumbnail size will be sent here -- SET UP -- in progress
-[size 400] // every file saved with this thumbnail size will be sent here -- SET UP -- in progress
-[size 600] // every file saved with this thumbnail size will be sent here -- SET UP -- in progress
+[size 200] // every file saved with this thumbnail size will be sent here ============================ DONE
+[size 400] // every file saved with this thumbnail size will be sent here ============================ DONE
+[size 600] // every file saved with this thumbnail size will be sent here ============================ DONE
 [rotated] // send every rotated file here ============================================================ DONE
-[black white] // send every black/white file here -- SET UP
+[black white] // send every black/white file here ==================================================== DONE
 No folder for blurred files -- SET UP
 [custom change] // look at documentation and add a custom change with its folder
 Have option to view every edited image -------------- ?????
