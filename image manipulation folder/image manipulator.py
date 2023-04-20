@@ -44,6 +44,12 @@ start()
                 > get filename from user
                 > get amount of degrees to rotate
                 > save and rotate with users input to rotate (refer to video from class)   
+
+---------------------------------
+What I could have been done to improve this project if I had more time:
+    1. Could have moved duplicate code into their own functions to save lines (example: getting the file name and creating a directory) 
+    2. Could have made code more *clean* to prevent new bugs from emerging
+                
 """
 
 
@@ -134,14 +140,15 @@ def blur_image(): #BUGGED
         os.mkdir("image manipulation folder/blurred images")
     except:
         pass 
-    
-    while blur_value is not int:
+
+    blur_value = 20
+    while blur_value <= 0 and blur_value >= 16:
         try: 
-            blur_value = int(input("input a blur value to determine how much you want to blur your image. \nvalue 4 for scale is enough to blur out most details: "))
+            blur_value = int(input("how much do you want to blur your image? \npick a range between 1 - 15 \n\ninput: "))
         except:
-            pass
+            print("not working")
     try:
-        image_blur.filter(ImageFilter.GaussianBlur(4)).save("image manipulation folder/blurred images/" + "e") # It appears to me that the interpreter cannot find the "ImageFilter" class. 
+        image_blur.filter(ImageFilter.GaussianBlur(blur_value)).save("image manipulation folder/blurred images/" + "e.jpeg") # It appears to me that the interpreter cannot find the "ImageFilter" class. 
     except:
         print("cannot save file with blur function properly")
     end()
@@ -207,7 +214,7 @@ def transpose_image():
     except:
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
         match error_prompt:
-            case "1": rotate_image()
+            case "1": transpose_image()
             case _: 
                 quit()
     try:
@@ -215,12 +222,22 @@ def transpose_image():
     except:
         pass
 
-    transpose_choice = input("how would you like to transpose your image? \n[1] | flip horizontally \n[2] | flip vertically \n[3] | rotate 90 degrees \n[4] | rotate 180 degrees \n[5] | rotate 270 degrees \n\n input: ")
+    transpose_choice = None
+    while transpose_choice != "1" and transpose_choice != "2" and transpose_choice != "3" and transpose_choice != "4" and transpose_choice != "5":
+        transpose_choice = input("how would you like to transpose your image? \n[1] | flip horizontally \n[2] | flip vertically \n[3] | rotate 90 degrees \n[4] | rotate 180 degrees \n[5] | rotate 270 degrees \n\n input: ")
     
     match transpose_choice:
         case "1":
-            pass
-    #image_transpose = image_transpose.transpose()
+            image_transpose.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"image manipulation folder/transposed images/{file_name}")
+        case "2":
+            image_transpose.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"image manipulation folder/transposed images/{file_name}")
+        case "3":
+            image_transpose.transpose(Image.Transpose.ROTATE_90).save(f"image manipulation folder/transposed images/{file_name}")
+        case "4":
+            image_transpose.transpose(Image.Transpose.ROTATE_180).save(f"image manipulation folder/transposed images/{file_name}")
+        case "5":
+            image_transpose.transpose(Image.Transpose.ROTATE_270).save(f"image manipulation folder/transposed images/{file_name}")
+    #image_transpose.save(f"image manipulation folder/transposed images/{file_name}")
     print("EYO")
 
 def end(): #DONE
@@ -234,7 +251,7 @@ def end(): #DONE
 
 def start_menu(): #DONE
     input_choice = 0
-    while input_choice > 6 or input_choice < 1:
+    while input_choice > 7 or input_choice < 1:
         input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n[6] | view an image \n[7] | transpose an image \n\nselect a value designated to a function: "))
     # -----------------------------------------------------------
     if input_choice == 1: jpeg_to_png()
@@ -261,20 +278,16 @@ the project requirements:
 [size 600] // every file saved with this thumbnail size will be sent here ============================ DONE
 [rotated] // send every rotated file here ============================================================ DONE
 [black white] // send every black/white file here ==================================================== DONE
-No folder for blurred files ==================================== FIX IMAGE FILTER CLASS ERROR
-[custom change] ====== transpose an image
+No folder for blurred files ==================================== FIX IMAGE FILTER MODULE ERROR
+[custom change] =====================================================Transpose an image=============== DONE
 Have option to view every edited image -------------- ?????
 Have no errors for whatever the user inputs on runtime =============================================== Hit or miss
-MUST have unique variable and folder names. ESPECIALLY CODE ========================================== DONE
+MUST have unique variable and folder names. ESPECIALLY CODE ========================================== DONE (but super messy)
 BONUS: Have the script build the folders for you when a new change type is created ---- in progress
-Expected inputs:
 
 
 
-
-BONUS: Have [hybrid] for pictures with multiple changes
+BONUS: Have [hybrid] for pictures with multiple changes - this feature has not been implemented
 
 w at
-
-
 """
