@@ -54,7 +54,7 @@ What I could have been done to improve this project if I had more time:
 
 
 
-def jpeg_to_png(): #DONE
+def jpeg_to_png(): #VERIFIED
     file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
     try:
         image_old = Image.open("image manipulation folder/" + str(file_name))
@@ -83,7 +83,7 @@ def change_size(): # DONE
     thumb_600 = (600, 600)
 
     try:
-        file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
+        file_name = input("enter the filename \nexample: bingus.jpeg \n\nchosen image: ")
         image_size = Image.open("image manipulation folder/" + str(file_name))
     except:
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
@@ -141,12 +141,15 @@ def blur_image(): #BUGGED
     except:
         pass 
 
-    blur_value = 20
-    while blur_value <= 0 and blur_value >= 16:
-        try: 
-            blur_value = int(input("how much do you want to blur your image? \npick a range between 1 - 15 \n\ninput: "))
-        except:
-            print("not working")
+    try: 
+        blur_value = int(input("how much do you want to blur your image  \n\npick a number: ")); 
+    except: 
+        error_prompt = input("your input is invalid. would you like to retry this function? \n[ 1 ] | yes \n[any] | no \n\ninput: ")
+        match error_prompt:
+            case "1": blur_image()
+            case _: 
+                quit() 
+    
     try:
         image_blur.filter(ImageFilter.GaussianBlur(blur_value)).save("image manipulation folder/blurred images/" + "e.jpeg") # It appears to me that the interpreter cannot find the "ImageFilter" class. 
     except:
@@ -207,7 +210,7 @@ def view_image(): #DONE
             case _: quit()
     end()
 
-def transpose_image():
+def transpose_image(): #TEST
     try: 
         file_name = input("enter the filename \nexample: bingus.jpeg \n\nchosen image: ")
         image_transpose = Image.open("image manipulation folder/" + str(file_name))
@@ -237,8 +240,7 @@ def transpose_image():
             image_transpose.transpose(Image.Transpose.ROTATE_180).save(f"image manipulation folder/transposed images/{file_name}")
         case "5":
             image_transpose.transpose(Image.Transpose.ROTATE_270).save(f"image manipulation folder/transposed images/{file_name}")
-    #image_transpose.save(f"image manipulation folder/transposed images/{file_name}")
-    print("EYO")
+    end()
 
 def end(): #DONE
     input_choice = 0
@@ -282,8 +284,15 @@ No folder for blurred files ==================================== FIX IMAGE FILTE
 [custom change] =====================================================Transpose an image=============== DONE
 Have option to view every edited image -------------- ?????
 Have no errors for whatever the user inputs on runtime =============================================== Hit or miss
+
+
+
+
+
 MUST have unique variable and folder names. ESPECIALLY CODE ========================================== DONE (but super messy)
-BONUS: Have the script build the folders for you when a new change type is created ---- in progress
+BONUS: Have the script build the folders for you when a new change type is created ==== mostly done===
+
+
 
 
 
