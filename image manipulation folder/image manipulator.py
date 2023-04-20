@@ -54,7 +54,7 @@ What I could have been done to improve this project if I had more time:
 
 
 
-def jpeg_to_png(): #VERIFIED
+def jpeg_to_png(): #DONE
     file_name = input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")
     try:
         image_old = Image.open("image manipulation folder/" + str(file_name))
@@ -66,6 +66,7 @@ def jpeg_to_png(): #VERIFIED
 
     try:
         os.mkdir("image manipulation folder/png images")
+        print("\ncreated directory \"png images\"")
         #pass
     except:
         pass #don't do anything if there is already a "png images" folder
@@ -100,6 +101,7 @@ def change_size(): # DONE
                 image_size.thumbnail(thumb_200)
                 try:
                     os.mkdir("image manipulation folder/size 200")
+                    print("\ncreated directory \"size 200\"")
                 except:
                     pass
 
@@ -108,6 +110,7 @@ def change_size(): # DONE
                 image_size.thumbnail(thumb_400)
                 try:
                     os.mkdir("image manipulation folder/size 400")
+                    print("\ncreated directory \"size 400\"")
                 except:
                     pass
 
@@ -116,6 +119,7 @@ def change_size(): # DONE
                 image_size.thumbnail(thumb_600)
                 try:
                     os.mkdir("image manipulation folder/size 600")
+                    print("\ncreated directory \"size 600\"")
                 except:
                     pass
 
@@ -126,7 +130,7 @@ def change_size(): # DONE
     
     end()
 
-def blur_image(): #BUGGED
+def blur_image(): #DONE
     try:
         file_name = input("enter the filename \nexample: bingus.jpeg \n\nchosen image: ")
         image_blur = Image.open("image manipulation folder/" + str(file_name))
@@ -138,6 +142,7 @@ def blur_image(): #BUGGED
                 quit() 
     try:
         os.mkdir("image manipulation folder/blurred images")
+        print("\ncreated directory \"blurred images\"")
     except:
         pass 
 
@@ -151,9 +156,9 @@ def blur_image(): #BUGGED
                 quit() 
     
     try:
-        image_blur.filter(ImageFilter.GaussianBlur(blur_value)).save("image manipulation folder/blurred images/" + "e.jpeg") # It appears to me that the interpreter cannot find the "ImageFilter" class. 
+        image_blur.filter(ImageFilter.GaussianBlur(blur_value)).save("image manipulation folder/blurred images/" + file_name.replace(".jpeg", "(blurred).jpeg"))
     except:
-        print("cannot save file with blur function properly")
+        print("cannot save file with blur function properly. Perhaps there is an image with the same name?")
     end()
 
 def black_white(): #DONE
@@ -168,18 +173,20 @@ def black_white(): #DONE
                 quit() 
     try:
         os.mkdir("image manipulation folder/black-white images")
+        print("\ncreated directory \"black-white images\"")
     except:
         pass 
 
     try:
         image_colorless.convert(mode= 'L').save("image manipulation folder/black-white images/" + (file_name.replace(".jpeg", "(colorless).jpeg")))
     except:
-        pass
+        print("cannot save file with black-white function properly. Perhaps there is an image with the same name?")
     end()
 
 def rotate_image(): #DONE
     try:
         os.mkdir("image manipulation folder/rotated images")
+        print("\ncreated directory \"rotated images\"")
     except:
         pass #pass anything if folder already exists
     
@@ -196,7 +203,8 @@ def rotate_image(): #DONE
     while type(degree) is not int:
         degree = int(input("how many degrees would you like to rotate this image?: "))
     
-    image_rotate.rotate(degree).save("image manipulation folder/rotated images/" + file_name.replace(".jpeg", "(rotated["+ str(degree) +"]).jpeg"))
+    try: image_rotate.rotate(degree).save("image manipulation folder/rotated images/" + file_name.replace(".jpeg", "(rotated["+ str(degree) +"]).jpeg"))
+    except: print("cannot save file with rotate function properly. Perhaps there is an image with the same name?")
     end()
 
 def view_image(): #DONE
@@ -210,7 +218,7 @@ def view_image(): #DONE
             case _: quit()
     end()
 
-def transpose_image(): #TEST
+def transpose_image(): #DONE
     try: 
         file_name = input("enter the filename \nexample: bingus.jpeg \n\nchosen image: ")
         image_transpose = Image.open("image manipulation folder/" + str(file_name))
@@ -222,6 +230,7 @@ def transpose_image(): #TEST
                 quit()
     try:
         os.mkdir("image manipulation folder/transposed images")
+        print("\ncreated directory \"transposed images\"")
     except:
         pass
 
@@ -231,15 +240,20 @@ def transpose_image(): #TEST
     
     match transpose_choice:
         case "1":
-            image_transpose.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"image manipulation folder/transposed images/{file_name}")
+            except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "2":
-            image_transpose.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"image manipulation folder/transposed images/{file_name}")
+            except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "3":
-            image_transpose.transpose(Image.Transpose.ROTATE_90).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.ROTATE_90).save(f"image manipulation folder/transposed images/{file_name}")
+            except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "4":
-            image_transpose.transpose(Image.Transpose.ROTATE_180).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.ROTATE_180).save(f"image manipulation folder/transposed images/{file_name}")
+            except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "5":
-            image_transpose.transpose(Image.Transpose.ROTATE_270).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.ROTATE_270).save(f"image manipulation folder/transposed images/{file_name}")
+            except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
     end()
 
 def end(): #DONE
@@ -280,7 +294,7 @@ the project requirements:
 [size 600] // every file saved with this thumbnail size will be sent here ============================ DONE
 [rotated] // send every rotated file here ============================================================ DONE
 [black white] // send every black/white file here ==================================================== DONE
-No folder for blurred files ==================================== FIX IMAGE FILTER MODULE ERROR
+folder for blurred files ==================================== DEBUG
 [custom change] =====================================================Transpose an image=============== DONE
 Have option to view every edited image -------------- ?????
 Have no errors for whatever the user inputs on runtime =============================================== Hit or miss
