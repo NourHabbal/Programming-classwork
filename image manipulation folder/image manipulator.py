@@ -89,7 +89,7 @@ def change_size(): # DONE
     except:
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
         match error_prompt:
-            case "1": rotate_image()
+            case "1": change_size()
             case _: 
                 quit() #bug: if the parentheses are removed, it continues from here to ask how many degrees to rotate the image, despite not having the image detected
     
@@ -240,19 +240,19 @@ def transpose_image(): #DONE
     
     match transpose_choice:
         case "1":
-            try: image_transpose.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save("image manipulation folder/transposed images/" + file_name.replace(".jpeg", "(transposed).jpeg"))
             except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "2":
-            try: image_transpose.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save("image manipulation folder/transposed images/" + file_name.replace(".jpeg", "(transposed).jpeg"))
             except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "3":
-            try: image_transpose.transpose(Image.Transpose.ROTATE_90).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.ROTATE_90).save("image manipulation folder/transposed images/" + file_name.replace(".jpeg", "(transposed).jpeg"))
             except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "4":
-            try: image_transpose.transpose(Image.Transpose.ROTATE_180).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.ROTATE_180).save("image manipulation folder/transposed images/" + file_name.replace(".jpeg", "(transposed).jpeg"))
             except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
         case "5":
-            try: image_transpose.transpose(Image.Transpose.ROTATE_270).save(f"image manipulation folder/transposed images/{file_name}")
+            try: image_transpose.transpose(Image.Transpose.ROTATE_270).save("image manipulation folder/transposed images/" + file_name.replace(".jpeg", "(transposed).jpeg"))
             except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
     end()
 
