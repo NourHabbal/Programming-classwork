@@ -39,7 +39,7 @@ CHAPTER 5 ANSWERS:
 6. if you are looking for the expression "cat" you are looking for the key with the same name in a given 
    dictionary. If you are looking for "cat" in some_dictionary.values() you are looking for a key's value 
    that matches "cat"
-7. 
+7. ---?
 8. the module pprint and the function with the same name: pprint().
 
 
@@ -79,8 +79,9 @@ start()
 
 ---------------------------------
 What I could have been done to improve this project if I had more time:
-    1. Could have moved duplicate code into their own functions to save lines (example: getting the file name and creating a directory with a single function) 
+    1. Could have moved duplicate code blocks into their own functions to save lines (example: getting the file name and creating a directory with a single function) 
     2. Could have made code more *clean* to prevent new bugs from emerging
+    3. Further testing to prevent unintended crashes
                 
 """
 
@@ -93,8 +94,10 @@ def jpeg_to_png():
     except:
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
         match error_prompt:
-            case "1": jpeg_to_png()
-            case _: quit()
+            case "1": 
+                jpeg_to_png()
+            case _: 
+                quit()
 
     try:
         os.mkdir("image manipulation folder/png images")
@@ -121,7 +124,8 @@ def change_size():
     except:
         error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
         match error_prompt:
-            case "1": change_size()
+            case "1": 
+                change_size()
             case _: 
                 quit() #bug: if the parentheses are removed, it continues from here to ask how many degrees to rotate the image, despite not having the image detected
     
@@ -167,9 +171,10 @@ def blur_image():
         file_name = input("enter the filename \nexample: bingus.jpeg \n\nchosen image: ")
         image_blur = Image.open("image manipulation folder/" + str(file_name))
     except:
-        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
+        error_prompt = input("it looks like there is no existing file in this directory. Would you like to retry this function? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
         match error_prompt:
-            case "1": blur_image()
+            case "1": 
+                blur_image()
             case _: 
                 quit() 
 
@@ -178,7 +183,8 @@ def blur_image():
     except: 
         error_prompt = input("your input is invalid. would you like to retry this function? \n[ 1 ] | yes \n[any] | no \n\ninput: ")
         match error_prompt:
-            case "1": blur_image()
+            case "1": 
+                blur_image()
             case _: 
                 quit() 
     
@@ -238,8 +244,10 @@ def rotate_image():
     except:
         error_prompt = input("it appears you provided an invalid prompt. Would you like to retry function execution? \n[ 1 ] | yes \n[any] | no \n\ninput: ")
         match error_prompt:
-            case "1": rotate_image()
-            case _: quit()
+            case "1": 
+                rotate_image()
+            case _: 
+                quit()
     try: 
         image_rotate.rotate(degree).save("image manipulation folder/rotated images/" + file_name.replace(".jpeg", "(rotated["+ str(degree) +"]).jpeg"))
     except: 
@@ -248,8 +256,8 @@ def rotate_image():
 
 def view_image():
     choice = 0
-    while choice != "1" and choice != "2" and choice != "3":
-        choice = input("what would you like to view? \n[1] | subfolder contents in project folder \n[2] | specific image \n[3] | every image in project folder \n\ninput: ")
+    while choice != "1" and choice != "2":
+        choice = input("what photos would you like to view? \n[1] | subfolder contents in project folder \n[2] | specific image \n\ninput: ")
     
     match choice:
         case "1": 
@@ -258,7 +266,8 @@ def view_image():
             try:
                 for i in os.listdir("image manipulation folder/" + choice + "/"):
                     if i.endswith(".jpeg") or i.endswith(".png"):
-                        print(i)
+                        current_image = Image.open("image manipulation folder/" + choice + "/" + i)
+                        current_image.show()
             except:
                 match input("the folder you provided does not exist. Would you like to retry this function? \n[1] | yes \n[any] | no \n\ninput: "):
                     case "1":
@@ -273,12 +282,10 @@ def view_image():
             except:
                 error_prompt = input("it looks like there is no existing file in this directory. Would you like to retry this function? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
                 match error_prompt:
-                    case "1": view_image()
-                    case _: quit()
-        case "3":
-            for i in os.listdir(path="image manipulation folder/."):
-                    if i.endswith(".jpeg") or i.endswith(".png"):
-                        print(i)
+                    case "1": 
+                        view_image()
+                    case _: 
+                        quit()
     end()
 
 def transpose_image():
@@ -351,14 +358,14 @@ start_menu()
 To do list:
 
 [png] // Every png file saved will be moved here ===================================================== DONE
-[size 200] // every file saved with this thumbnail size will be sent here ============================ DONE
-[size 400] // every file saved with this thumbnail size will be sent here ============================ DONE
-[size 600] // every file saved with this thumbnail size will be sent here ============================ DONE
+[size 200] // every file saved with this thumbnail size will be sent here ============================ DONE (?)
+[size 400] // every file saved with this thumbnail size will be sent here ============================ DONE (?)
+[size 600] // every file saved with this thumbnail size will be sent here ============================ DONE (?)
 [rotated] // send every rotated file here ============================================================ DONE
 [black white] // send every black/white file here ==================================================== DONE
 folder for blurred files ============================================================================= DONE
 [custom change] =====================================================Transpose an image=============== DONE
-Have option to view every edited image ---? 
+Have option to view every edited image =============================================================== DONE (?)
 Have no errors for whatever the user inputs on runtime =============================================== DONE
 MUST have unique variable and folder names. ESPECIALLY CODE ========================================== DONE 
 BONUS: Have the script build the folders for you when a new change type is created =================== DONE
