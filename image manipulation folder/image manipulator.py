@@ -9,14 +9,42 @@ import os
 """
 NOTE:
 --------------
++ I included the chapter 5 answers in this large comment, as well as the initally planned structure of the code
 + This script uses Python version 3.11.3 with Pillow to work as intented
-+ This script was programmed with the repository folder opened. 
-    + I believe the code would not work as intended if it was not in the repository's 
++ This script was programmed with the repository folder used in the editor. 
+    + I believe the code would not work as intended if it was not in the repository folder's 
       directory, as folder/file paths are accessed by looking up this project's folder.
       However, I have not been able to test this unfortunately
 
+-------------------
+CHAPTER 5 ANSWERS:
+1. To create a dictionary:
+   a = {
+   "key": value
+   }
+   However, to create an empty dictionary, keys and their values are excluded
+   b = {}  
+2. creating a dictionary with key called "foo" and value 42
+   some_dictionary = {
+   "foo": 42,
+   "some_key": 0.1134
+   }
+3. Dictionaries are unordered unlike lists, which explains why dictionaries can't be sliced like lists can
+4. Essentially, we are asking for a key that doesn't exist in the given dictionary "spam". 
+   This results in a key error, similar to how this error is thrown when accessing "eggs" from the 
+   dictionary "picnic items"
+5. these have the same meaning:
+   if some_value in some_dictionary
+   if some_value in some_dictionary.keys()
+6. if you are looking for the expression "cat" you are looking for the key with the same name in a given 
+   dictionary. If you are looking for "cat" in some_dictionary.values() you are looking for a key's value 
+   that matches "cat"
+7. 
+8. the module pprint and the function with the same name: pprint().
 
-initial idea:
+
+-------------------------------------------
+PLANOUT:
 
 start()
     > user chooses out of x options
@@ -219,14 +247,38 @@ def rotate_image():
     end()
 
 def view_image():
-    try: 
-        image_view = Image.open("image manipulation folder/" + str(input("enter the filename) \nexample: bingus.jpeg \n\nchosen image: ")))
-        image_view.show()
-    except:
-        error_prompt = input("it looks like there is no existing file in this directory. Would you like to try again? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
-        match error_prompt:
-            case "1": view_image()
-            case _: quit()
+    choice = 0
+    while choice != "1" and choice != "2" and choice != "3":
+        choice = input("what would you like to view? \n[1] | subfolder contents in project folder \n[2] | specific image \n[3] | every image in project folder \n\ninput: ")
+    
+    match choice:
+        case "1": 
+            choice = 0
+            choice = input("what folder in this project's folder would you like to display? \nenter a folder name (example: blurred images): ")
+            try:
+                for i in os.listdir("image manipulation folder/" + choice + "/"):
+                    if i.endswith(".jpeg") or i.endswith(".png"):
+                        print(i)
+            except:
+                match input("the folder you provided does not exist. Would you like to retry this function? \n[1] | yes \n[any] | no \n\ninput: "):
+                    case "1":
+                        view_image()
+                    case _:
+                        quit()
+
+        case "2":
+            try: 
+                image_view = Image.open("image manipulation folder/" + str(input("enter the filePATH excluding the project's main folder \nexample: bingus.jpeg, blurred images/example_image(blurred).jpeg, etc.. \n\nchosen image: ")))
+                image_view.show()
+            except:
+                error_prompt = input("it looks like there is no existing file in this directory. Would you like to retry this function? \n\n[ 1 ] | yes \n[any] | no \ninput: ")
+                match error_prompt:
+                    case "1": view_image()
+                    case _: quit()
+        case "3":
+            for i in os.listdir(path="image manipulation folder/."):
+                    if i.endswith(".jpeg") or i.endswith(".png"):
+                        print(i)
     end()
 
 def transpose_image():
@@ -295,9 +347,8 @@ start_menu()
 
 
 
-
 """
-the project requirements:
+To do list:
 
 [png] // Every png file saved will be moved here ===================================================== DONE
 [size 200] // every file saved with this thumbnail size will be sent here ============================ DONE
@@ -307,21 +358,9 @@ the project requirements:
 [black white] // send every black/white file here ==================================================== DONE
 folder for blurred files ============================================================================= DONE
 [custom change] =====================================================Transpose an image=============== DONE
-Have option to view every edited image -------------- ?????
-Have no errors for whatever the user inputs on runtime =============================================== Hit or miss
+Have option to view every edited image ---? 
+Have no errors for whatever the user inputs on runtime =============================================== DONE
+MUST have unique variable and folder names. ESPECIALLY CODE ========================================== DONE 
+BONUS: Have the script build the folders for you when a new change type is created =================== DONE
 
-
-
-
-
-MUST have unique variable and folder names. ESPECIALLY CODE ========================================== DONE (but super messy)
-BONUS: Have the script build the folders for you when a new change type is created ==== mostly done===
-
-
-
-
-
-BONUS: Have [hybrid] for pictures with multiple changes - this feature has not been implemented
-
-w at
 """
