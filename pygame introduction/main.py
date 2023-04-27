@@ -6,6 +6,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("le game") 
 
 WHITE = (255, 255, 255)
+MOVE_SPEED = 3
 
 framerate = 60
 
@@ -39,23 +40,23 @@ def main():
         
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_a]: #LEFT
-            player_one.x -= 1
+            player_one.x -= MOVE_SPEED
         elif keys_pressed[pygame.K_s]: #DOWN
-            player_one.y += 1
+            player_one.y += MOVE_SPEED
         elif keys_pressed[pygame.K_w]: #UP
-            player_one.y -= 1
+            player_one.y -= MOVE_SPEED
         elif keys_pressed[pygame.K_d]: #RIGHT
-            player_one.x += 1
+            player_one.x += MOVE_SPEED
 
 
         if keys_pressed[pygame.K_j]: #LEFT
-            player_two.x -= 1
+            player_two.x -= MOVE_SPEED
         elif keys_pressed[pygame.K_k]: #DOWN
-            player_two.y += 1
+            player_two.y += MOVE_SPEED
         elif keys_pressed[pygame.K_i]: #UP
-            player_two.y -= 1
+            player_two.y -= MOVE_SPEED
         elif keys_pressed[pygame.K_l]: #RIGHT
-            player_two.x += 1
+            player_two.x += MOVE_SPEED
 
         #player_one.x += 1
         update_window(player_one, player_two)
@@ -63,3 +64,4 @@ def main():
     pygame.quit()
 if __name__ == "__main__":
     main()
+
