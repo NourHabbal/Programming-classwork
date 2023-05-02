@@ -5,7 +5,7 @@ WIDTH, HEIGHT = 900, 500
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("le game") 
 
-WHITE = (255, 255, 255)
+WHITE = (50, 50, 155)
 BLACK = (0, 0, 0)
 MOVE_SPEED = 3
 
