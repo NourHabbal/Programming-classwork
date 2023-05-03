@@ -15,7 +15,7 @@ BORDER = pygame.Rect(WIDTH//2, 0, 10, HEIGHT)
 FPS = 60
 PLAYER_WIDTH, PLAYER_HEIGHT = 50, 80
 BULLET_SPEED = 7
-BULLET_MAX = 30
+BULLET_MAX = 5
 
 PLAYER_ONE_HIT = pygame.USEREVENT + 1
 PLAYER_TWO_HIT = pygame.USEREVENT + 2
@@ -26,8 +26,12 @@ SPRITE_IMAGE2 = pygame.image.load(os.path.join("pygame introduction/asset/sprite
 SPRITE_EDIT1 = pygame.transform.rotate(pygame.transform.scale(SPRITE_IMAGE1, (PLAYER_WIDTH, PLAYER_HEIGHT)), 180 )
 SPRITE_EDIT2 = pygame.transform.rotate(pygame.transform.scale(SPRITE_IMAGE2, (PLAYER_WIDTH, PLAYER_HEIGHT)), 0 )
 
+#BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("somethg.png"))(WIDTH, HEIGHT))
+
+
 def draw_window(one, two, one_bullets, two_bullets):
     WIN.fill((WHITE))
+    #WIN.blit(BACKGROUND, (0,0))
     pygame.draw.rect(WIN, BLACK, BORDER)
     WIN.blit(SPRITE_EDIT1, (one.x, one.y))
     WIN.blit(SPRITE_EDIT2, (two.x, two.y))
@@ -76,7 +80,7 @@ def handle_bullets(player_one_bullets, player_two_bullets, player_one, player_tw
             pygame.event.post(pygame.event.Event(PLAYER_ONE_HIT))
             player_two_bullets.remove(bullet)
         elif bullet.x < 0: #outside barrier
-            player_two_bullets.remove(bullet)
+           player_two_bullets.remove(bullet)
 
 
 def main():
