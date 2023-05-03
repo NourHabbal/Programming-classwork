@@ -7,7 +7,7 @@ pygame.display.set_caption("le game")
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
+RED = (0, 0, 0)
 YELLOW = (255, 255, 0)
 MOVE_SPEED = 3
 
@@ -62,21 +62,22 @@ def handle_movement_two(keys_pressed, player_given):
         player_given.y += MOVE_SPEED
 
 def handle_bullets(player_one_bullets, player_two_bullets, player_one, player_two):
-    for i in player_two_bullets:
-        i.x -= BULLET_SPEED
-        if player_one.colliderect(i):
-            pygame.event.post(pygame.event.Event(PLAYER_ONE_HIT))
-            player_two_bullets.remove(i)
-        elif i.x > WIDTH:
-            player_two_bullets.remove(i)
-
-    for i in player_one_bullets:
-        i.x += BULLET_SPEED
-        if player_two.colliderect(i):
+    for bullet in player_one_bullets:
+        bullet.x += BULLET_SPEED
+        if player_two.colliderect(bullet):
             pygame.event.post(pygame.event.Event(PLAYER_TWO_HIT))
-            player_one_bullets.remove(i)
-        elif i.x > 0:
-            player_one_bullets.remove(i)
+            player_one_bullets.remove(bullet)
+        elif bullet.x > WIDTH: #outside barrier
+            player_one_bullets.remove(bullet)
+
+    for bullet in player_two_bullets:
+        bullet.x -= BULLET_SPEED
+        if player_one.colliderect(bullet):
+            pygame.event.post(pygame.event.Event(PLAYER_ONE_HIT))
+            player_two_bullets.remove(bullet)
+        elif bullet.x < 0: #outside barrier
+            player_two_bullets.remove(bullet)
+
 
 def main():
     player_one = pygame.Rect(100, 300,PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -110,7 +111,7 @@ def main():
 
         draw_window(player_one, player_two, player_one_bullets, player_two_bullets)
 
- 
+
     pygame.quit()
 if __name__ == "__main__":
     main()
