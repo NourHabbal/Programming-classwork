@@ -5,9 +5,6 @@ import math
 pygame.font.init()
 pygame.mixer.init()
 
-
-
-
 #CHANGES MADE:
 # + Made it so that the lower the health a player has the faster they will be. this uses the function y = 2^{-x+3}+1. (Thank Precalus 12 for this knowledge :) )
 #   y is the speed and x is the current health of the given player, the variable MOVE_SPEED has been replaced by this function
@@ -27,6 +24,10 @@ pygame.mixer.init()
 # rotate sprites for vertical changes
 
 
+"""
+This project was created in python version 3.11.3
+"""
+
 #-------------------
 
 WIDTH, HEIGHT = 1100, 700
@@ -38,19 +39,18 @@ BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join("pygame introduction", "asset
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (0, 0, 0)
+RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
-#MOVE_SPEED = 3 #no longer needed
 
-HEALTH_FONT = pygame.font.SysFont("comicsans", 40)
-WINNER_FONT = pygame.font.SysFont("comicsans", 100)
+DISPLAY_HP_FONT = pygame.font.SysFont("comicsans", 40)
+DISPLAY_WINNER_FONT = pygame.font.SysFont("comicsans", 100)
 
 #BORDER = pygame.Rect(WIDTH//2, 0, 10, HEIGHT) # CHANGE FOR VERTICAL MOD
-BORDER2 = pygame.Rect(0,HEIGHT//2, WIDTH, 10)
+COLLISION = pygame.Rect(0,HEIGHT//2, WIDTH, 10)
 
-FPS = 60
-PLAYER_WIDTH, PLAYER_HEIGHT = 50, 80
+FRAMERATE = 60
+PLAYER_WIDTH, PLAYER_HEIGHT = 70, 80
 BULLET_SPEED = 7
 BULLET_MAX = 5
 
@@ -60,11 +60,12 @@ PLAYER_TWO_HIT = pygame.USEREVENT + 2
 PLAYER_ONE_HEALTH = 9
 PLAYER_TWO_HEALTH = 9
 
-SPRITE_IMAGE1 = pygame.image.load(os.path.join("pygame introduction", "asset", "sprite1.png"))
-SPRITE_IMAGE2 = pygame.image.load(os.path.join("pygame introduction", "asset", "sprite2.png"))
 
-SPRITE_EDIT1 = pygame.transform.rotate(pygame.transform.scale(SPRITE_IMAGE1, (PLAYER_WIDTH, PLAYER_HEIGHT)), 0 ) # CHANGE FOR VERTICAL MOD
-SPRITE_EDIT2 = pygame.transform.rotate(pygame.transform.scale(SPRITE_IMAGE2, (PLAYER_WIDTH, PLAYER_HEIGHT)), 0 ) # CHANGE FOR VERTICAL MOD
+SPRITE_IMAGE_SOURCE1 = pygame.image.load(os.path.join("pygame introduction", "asset", "sprite1.png"))
+SPRITE_IMAGE_SOURCE2 = pygame.image.load(os.path.join("pygame introduction", "asset", "sprite2.png"))
+
+SPRITE_EDIT1 = pygame.transform.rotate(pygame.transform.scale(SPRITE_IMAGE_SOURCE1, (PLAYER_WIDTH, PLAYER_HEIGHT)), 0 ) # CHANGE FOR VERTICAL MOD
+SPRITE_EDIT2 = pygame.transform.rotate(pygame.transform.scale(SPRITE_IMAGE_SOURCE2, (PLAYER_WIDTH, PLAYER_HEIGHT)), 0 ) # CHANGE FOR VERTICAL MOD
 
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("pygame introduction", "asset", "background.png")), (WIDTH, HEIGHT))
 
@@ -72,13 +73,13 @@ BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("pygame intro
 
 def draw_window(one, two, one_bullets, two_bullets, player_health_one, player_health_two):
     WIN.blit(BACKGROUND, (0,0))
-    #pygame.draw.rect(WIN, BLACK, BORDER)
-    pygame.draw.rect(WIN, BLACK, BORDER2)
+    #pygame.draw.rect(WIN, BLACK, BORDER) #old
+    pygame.draw.rect(WIN, BLACK, COLLISION)
 
     WIN.blit(SPRITE_EDIT1, (one.x, one.y))
     WIN.blit(SPRITE_EDIT2, (two.x, two.y))
-    player_one_text = HEALTH_FONT.render("P1 - HP: " + str(player_health_one), 1, WHITE)
-    player_two_text = HEALTH_FONT.render("P2 - HP: " + str(player_health_two), 1, WHITE)
+    player_one_text = DISPLAY_HP_FONT.render("P1 - HP: " + str(player_health_one), 1, WHITE)
+    player_two_text = DISPLAY_HP_FONT.render("P2 - HP: " + str(player_health_two), 1, WHITE)
 
     WIN.blit(player_two_text, (WIDTH - player_one_text.get_width() - 10, 10))
     WIN.blit(player_one_text, (10, 10))
@@ -92,51 +93,54 @@ def draw_window(one, two, one_bullets, two_bullets, player_health_one, player_he
     pygame.display.update()
 
 def handle_movement_one(keys_pressed, player_given):
-    # MOVE_SPEED has been replaced with 2^{-x+3}+1, where x = given player health. 
+    # MOVE_SPEED = 2^{-x+3}+1, where x = given player health. 
+    MOVE_SPEED = (2**(-PLAYER_ONE_HEALTH + 4) + 1) 
 
-    if keys_pressed[pygame.K_a] and player_given.x - (2**(-PLAYER_ONE_HEALTH + 4) + 1) > 0:  # LEFT
-        player_given.x -= (2**(-PLAYER_ONE_HEALTH + 4) + 1)
-    if keys_pressed[pygame.K_d] and player_given.x + (2**(-PLAYER_ONE_HEALTH + 4) + 1) + player_given.width < WIDTH:  # RIGHT
-        player_given.x += (2**(-PLAYER_ONE_HEALTH + 4) + 1)
-    if keys_pressed[pygame.K_w] and player_given.y - (2**(-PLAYER_ONE_HEALTH + 4) + 1) > 0:  # UP
-        player_given.y -= (2**(-PLAYER_ONE_HEALTH + 4) + 1)
-    if keys_pressed[pygame.K_s] and player_given.y + (2**(-PLAYER_ONE_HEALTH + 4) + 1) + player_given.height < HEIGHT//2:  # DOWN
-        player_given.y += (2**(-PLAYER_ONE_HEALTH + 4) + 1)
+    if keys_pressed[pygame.K_a] and player_given.x - MOVE_SPEED > 0:  # LEFT
+        player_given.x -= MOVE_SPEED
+    if keys_pressed[pygame.K_d] and player_given.x + MOVE_SPEED + player_given.width < WIDTH:  # RIGHT
+        player_given.x += MOVE_SPEED
+    if keys_pressed[pygame.K_w] and player_given.y - MOVE_SPEED > 0:  # UP
+        player_given.y -= MOVE_SPEED
+    if keys_pressed[pygame.K_s] and player_given.y + MOVE_SPEED + player_given.height < HEIGHT//2:  # DOWN
+        player_given.y += MOVE_SPEED
 
 def handle_movement_two(keys_pressed, player_given):
-    if keys_pressed[pygame.K_j] and player_given.x - (2**(-PLAYER_TWO_HEALTH + 4) + 1) > 0: #LEFT
-        player_given.x -= (2**(-PLAYER_TWO_HEALTH + 4) + 1)
-    if keys_pressed[pygame.K_l] and player_given.x + (2**(-PLAYER_TWO_HEALTH + 4) + 1) + player_given.width < WIDTH: #RIGHT
-        player_given.x += (2**(-PLAYER_TWO_HEALTH + 4) + 1)
-    if keys_pressed[pygame.K_i] and player_given.y - (2**(-PLAYER_TWO_HEALTH + 4) + 1) + BORDER2.height -19 > HEIGHT//2: #UP
-        player_given.y -= (2**(-PLAYER_TWO_HEALTH + 4) + 1)
-    if keys_pressed[pygame.K_k] and player_given.y + (2**(-PLAYER_TWO_HEALTH + 4) + 1) + player_given.height < HEIGHT: #DOWN
-        player_given.y += (2**(-PLAYER_TWO_HEALTH + 4) + 1)
+    MOVE_SPEED = (2**(-PLAYER_TWO_HEALTH + 4) + 1) 
+
+    if keys_pressed[pygame.K_j] and player_given.x - MOVE_SPEED > 0: #LEFT
+        player_given.x -= MOVE_SPEED
+    if keys_pressed[pygame.K_l] and player_given.x + MOVE_SPEED + player_given.width < WIDTH: #RIGHT
+        player_given.x += MOVE_SPEED
+    if keys_pressed[pygame.K_i] and player_given.y - MOVE_SPEED + COLLISION.height - 0 > HEIGHT//2: #UP
+        player_given.y -=MOVE_SPEED
+    if keys_pressed[pygame.K_k] and player_given.y + MOVE_SPEED + player_given.height//2 < HEIGHT: #DOWN
+        player_given.y += MOVE_SPEED
 
 def handle_bullets(player_one_bullets, player_two_bullets, player_one, player_two):
-    for bullet in player_one_bullets:
-        bullet.y += BULLET_SPEED
-        if player_two.colliderect(bullet):
+    for i in player_one_bullets:
+        i.y += BULLET_SPEED
+        if player_two.colliderect(i):
             pygame.event.post(pygame.event.Event(PLAYER_TWO_HIT))
-            player_one_bullets.remove(bullet)
-        elif bullet.y > WIDTH: #outside barrier
-            player_one_bullets.remove(bullet)
+            player_one_bullets.remove(i)
+        elif i.y > WIDTH: #outside barrier
+            player_one_bullets.remove(i)
 
-    for bullet in player_two_bullets:
-        bullet.y -= BULLET_SPEED
-        if player_one.colliderect(bullet):
+    for i in player_two_bullets:
+        i.y -= BULLET_SPEED
+        if player_one.colliderect(i):
             pygame.event.post(pygame.event.Event(PLAYER_ONE_HIT))
-            player_two_bullets.remove(bullet)
-        elif bullet.y < 0: #outside barrier
-           player_two_bullets.remove(bullet)
+            player_two_bullets.remove(i)
+        elif i.y < 0: #outside barrier
+           player_two_bullets.remove(i)
 
 
 def draw_winner(text):
-    draw_text = WINNER_FONT.render("the winner is...", 1, WHITE)
+    draw_text = DISPLAY_WINNER_FONT.render("the winner is...", 1, WHITE)
     WIN.blit(draw_text, (WIDTH/2 - draw_text.get_width() / 2, HEIGHT/2 - draw_text.get_height()/2))
     pygame.display.update()
     pygame.time.delay(2000)
-    draw_text = WINNER_FONT.render(text, 1, WHITE)
+    draw_text = DISPLAY_WINNER_FONT.render(text, 1, WHITE)
     WIN.fill(BLACK)
     WIN.blit(draw_text, (WIDTH/2 - draw_text.get_width() / 2, HEIGHT/2 - draw_text.get_height()/2))
     pygame.display.update()
@@ -152,7 +156,7 @@ def main():
     clock = pygame.time.Clock()
     run = True
     while run:
-        clock.tick(FPS)
+        clock.tick(FRAMERATE)
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
                 run = False
