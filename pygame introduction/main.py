@@ -25,7 +25,7 @@ pygame.mixer.init()
 
 
 """
-This project was created in python version 3.11.3
+This project was created with python versions 3.11.3 and 3.9.x 
 """
 
 #-------------------
