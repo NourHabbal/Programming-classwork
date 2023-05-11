@@ -11,8 +11,14 @@ if __name__ == "__main__":
 
 
 def update_window(target):
-    pass
-
+    if target == "background":
+        pass
+    elif target == "player":
+        pass
+    elif target == "":
+        pass
+    elif target == "":
+        pass
 
 
 # create window and define window name
