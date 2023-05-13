@@ -9,6 +9,17 @@ if __name__ == "__main__":
     main()
 """
 
+"""
+THE PLAN:
+Create a maze game
+    features
+        
+
+
+
+"""
+
+
 
 def update_window(target):
     if target == "background":
@@ -20,6 +31,9 @@ def update_window(target):
     elif target == "":
         pass
 
+    """POSSIBLE TARGET VALUES
+    -------------------------
+    1. background
 
 # create window and define window name
 WIN = pygame.display.set_mode((1000, 750))
@@ -30,7 +44,9 @@ def main():
     while run:
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
-                run = False
+                run = False 
+        # check all pygame events, and when pressing the quit (x) button, close the window
+
     pygame.quit()
 if __name__ == "__main__":
     main()

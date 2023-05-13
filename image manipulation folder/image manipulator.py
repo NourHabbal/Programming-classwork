@@ -326,6 +326,48 @@ def transpose_image():
             except: print("cannot save file with transpose function properly. Perhaps there is an image with the same name?")
     end()
 
+def rename_batch():
+    try:
+        match input("would you like an explanation for this function? \n[ 1 ]| yes \n[ 2 ] | no \n\n"):
+            case "1":
+                pass
+            case "2":
+                quit()
+    except:
+        print("there was an error, ending script...")
+        quit()
+    
+
+    old_characters = input("what occuring characters of the file names would you like to replace? \nExample: .0 (note: from name.0000.png): ")
+    new_characters = input("what would you like to replace those characters with?: ")
+    num_occurences_to_replace = 0
+    
+
+    try:
+        num_occurences_to_replace = int(input(f"how many instances of the re-occuring characters \"{old_characters}\" would you like to each have replaced with \"{new_characters}\"?: " ))
+    except:
+        pass
+        
+    new_name = ""
+
+    for foldername, subfolders, filenames in os.walk("image manipulation folder/batch"):
+        print(f"processing in folder {foldername}...")
+        for i in filenames:
+            print(f"processing file {filenames}\n")
+            if i.endswith(".png"):
+                new_name = i.replace(old_characters, new_characters, num_occurences_to_replace)
+                os.rename(os.path.join(foldername, i), os.path.join(foldername, new_name))
+        print(f"all files in \"image manipulation folder/batch\" have had their name formats changed. \n\n{num_occurences_to_replace} instance(s) of characters \"{old_characters}\" have each been changed to \"{new_characters}\" for each filename)")
+
+
+    """
+    for i in os.listdir("image manipulation folder/batch"):
+        if i.endswith(".png"):
+            new_name = i.replace(old_characters, new_characters, num_occurences_to_replace)
+        os.rename(os.path.join("image manipulation folder/batch", i), os.path.join("image manipulation folder/batch", new_name))
+    """
+
+
 def end(): 
     input_choice = 0
     print("\nchoice reset")
@@ -337,8 +379,8 @@ def end():
 
 def start_menu():
     input_choice = 0
-    while input_choice > 7 or input_choice < 1:
-        input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n[6] | view an image \n[7] | transpose an image \n\nselect a value designated to a function: "))
+    while input_choice > 8 or input_choice < 1:
+        input_choice = int(input("Welcome to the image manipulator! What Would you like to do? \n[1] | convert to png \n[2] | change thumbnail size \n[3] | blur an image \n[4] | change to black n' white \n[5] | rotate an image \n[6] | view an image \n[7] | transpose an image \n[8] | rename batch of images \n\n select a value designated to a function: "))
     # -----------------------------------------------------------
     if input_choice == 1: jpeg_to_png()
     elif input_choice == 2: change_size()
@@ -347,6 +389,7 @@ def start_menu():
     elif input_choice == 5: rotate_image()
     elif input_choice == 6: view_image()
     elif input_choice == 7: transpose_image()
+    elif input_choice == 8: rename_batch()
     else: print("error 1"); return 1
 
 start_menu()
