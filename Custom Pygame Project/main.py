@@ -34,9 +34,24 @@ def update_window(target):
     """POSSIBLE TARGET VALUES
     -------------------------
     1. background
+    2. player
+    3. NPC
+    4. projectiles
+    5. 
+    
+    
+    """
+    
+    
+    pass
+
+WINDOW_SIZE = { #for the sake of organization
+    "width": 1000,
+    "height": 750
+}
 
 # create window and define window name
-WIN = pygame.display.set_mode((1000, 750))
+WINDOW_DISPLAY = pygame.display.set_mode((WINDOW_SIZE["width"], WINDOW_SIZE["height"]))
 pygame.display.set_caption("another game")
 
 def main():
