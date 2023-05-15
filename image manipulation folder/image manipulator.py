@@ -330,7 +330,7 @@ def rename_batch():
     try:
         match input("would you like an explanation for this function? \n[ 1 ]| yes \n[ 2 ] | no \n\n"):
             case "1":
-                pass
+                print("this is a tool i made for when i want to work on a storyboarder project on an animation software called opentoonz")
             case "2":
                 quit()
     except:
