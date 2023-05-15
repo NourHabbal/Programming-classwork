@@ -8,14 +8,48 @@ win_width, win_height = 400, 400
 win_display = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("snake game 2.0")
 
+base_width, base_height = 10, 10 #snake and food width
+
+class snake: #note: 
+    def __init__(self, x, y):
+        self.pos_x = x
+        self.pos_y = y
+        self.body_list = [(self.pos_x, self.pos_y)]
+        self.displace_x = 10
+        self.displace_y = 0
+    def update(self, diff_x, diff_y):
+        pass
+    def move_snake():
+        pass
+
+def check_snake():
+    pass
+
+class food:
+    def _init_(self, x, y):
+        self.pos_x = x
+        self.pos_y = y
+    
+    def reset_position(self):
+        self.food_x, self.food_y = random.randrange(0, win_width) // 10 * 10, random.randrange(0, win_height) // 10 * 10
+
+snake_1 = snake(200, 200)
+red_dot = food(random.randrange(0, win_width) // 10 * 10, random.randrange(0, win_height) // 10 * 10)
+
+
+
+
 snake_one_pos_x, snake_one_pos_y = 200, 200
 snake_is_dead = False
 body_list_one = [(snake_one_pos_x, snake_one_pos_y)]
 displace_one_x, displace_one_y = 10, 0
 
-snake_width, snake_height = 10, 10
+snake_two_pos_x, snake_two_pos_y = 150, 150
+body_list_two = [(snake_two_pos_x, snake_two_pos_y)]
+displace_two_x, displace_two_y = -10, 0
 
-fruit_width, fruit_height = 10, 10
+
+
 food_pos_x, food_pos_y = random.randrange(0, win_width) // 10 * 10, random.randrange(0, win_height) // 10 * 10
 
 COLOR = {
@@ -30,11 +64,11 @@ font = pygame.font.SysFont("bahnschrift", 25)
 clock = pygame.time.Clock()
 
 def snake_one():
-    global snake_one_pos_x, snake_one_pos_y, food_pos_x, food_pos_y, snake_is_dead
+    global snake_one_pos_x, snake_one_pos_y, food_pos_x, food_pos_y, snake_is_dead, snake_two_pos_x, snake_two_pos_y
     snake_one_pos_x = (snake_one_pos_x + displace_one_x) % win_width
     snake_one_pos_y = (snake_one_pos_y + displace_one_y) % win_height
 
-    if((snake_one_pos_x, snake_one_pos_y) in body_list_one):
+    if((snake_one_pos_x, snake_one_pos_y) in body_list_one or (snake_two_pos_x, snake_two_pos_y) in body_list_one):
         snake_is_dead = True
         return
 
@@ -49,10 +83,21 @@ def snake_one():
     win_display.fill(COLOR["black"])
     score_count = font.render("score: " + str(len(body_list_one)), True, COLOR["white"])
     win_display.blit(score_count, [0, 0])
-    pygame.draw.rect(win_display, (COLOR["red"]), [food_pos_x, food_pos_y, fruit_width, fruit_height])
+    pygame.draw.rect(win_display, (COLOR["red"]), [food_pos_x, food_pos_y, base_width, base_height])
     for (i,j) in body_list_one:
-        pygame.draw.rect(win_display, (COLOR["white"]), [i, j, snake_width, snake_height])
+        pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
     pygame.display.update()
+
+def snake_two():
+    global snake_one_pos_x, snake_one_pos_y, food_pos_x, food_pos_y, snake_is_dead, snake_two_pos_x, snake_two_pos_y
+
+    snake_two_pos_x = (snake_two_pos_x + displace_two_x) % win_width
+    snake_two_pos_y = (snake_two_pos_y + displace_two_y) % win_height
+
+    for (i,j) in body_list_two:
+        pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
+    pygame.display.update()
+
 
 
 while True: 
@@ -98,7 +143,11 @@ while True:
                 case _:
                     continue
             snake_one()
+    
+    
     if (not events):
         snake_one()
 
     clock.tick(10)
+
+
