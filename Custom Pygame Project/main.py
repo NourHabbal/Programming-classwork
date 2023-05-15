@@ -1,70 +1,104 @@
 import pygame
-import os
-import math
+import random
 
-# Questions:
-"""
-Why how does this code keep the python program from closing right away?
-if __name__ == "__main__":
-    main()
-"""
+pygame.init()
 
-"""
-THE PLAN:
-Create a maze game
-    features
-        
+win_width, win_height = 400, 400
 
+win_display = pygame.display.set_mode((win_width, win_height))
+pygame.display.set_caption("snake game 2.0")
 
+snake_one_pos_x, snake_one_pos_y = 200, 200
+snake_is_dead = False
+body_list_one = [(snake_one_pos_x, snake_one_pos_y)]
+displace_one_x, displace_one_y = 10, 0
 
-"""
+snake_width, snake_height = 10, 10
 
+fruit_width, fruit_height = 10, 10
+food_pos_x, food_pos_y = random.randrange(0, win_width) // 10 * 10, random.randrange(0, win_height) // 10 * 10
 
-
-def update_window(target):
-    if target == "background":
-        pass
-    elif target == "player":
-        pass
-    elif target == "":
-        pass
-    elif target == "":
-        pass
-
-    """POSSIBLE TARGET VALUES
-    -------------------------
-    1. background
-    2. player
-    3. NPC
-    4. projectiles
-    5. 
-    
-    
-    """
-    
-    
-    pass
-
-WINDOW_SIZE = { #for the sake of organization
-    "width": 1000,
-    "height": 750
+COLOR = {
+    "white" : (255, 255, 255),
+    "black": (0, 0, 0),
+    "red": (255, 0, 0)
 }
 
-# create window and define window name
-WINDOW_DISPLAY = pygame.display.set_mode((WINDOW_SIZE["width"], WINDOW_SIZE["height"]))
-pygame.display.set_caption("another game")
-
-def main():
-    run = True
-    while run:
-        for i in pygame.event.get():
-            if i.type == pygame.QUIT:
-                run = False 
-        # check all pygame events, and when pressing the quit (x) button, close the window
-
-    pygame.quit()
-if __name__ == "__main__":
-    main()
+font = pygame.font.SysFont("bahnschrift", 25) 
 
 
+clock = pygame.time.Clock()
 
+def snake_one():
+    global snake_one_pos_x, snake_one_pos_y, food_pos_x, food_pos_y, snake_is_dead
+    snake_one_pos_x = (snake_one_pos_x + displace_one_x) % win_width
+    snake_one_pos_y = (snake_one_pos_y + displace_one_y) % win_height
+
+    if((snake_one_pos_x, snake_one_pos_y) in body_list_one):
+        snake_is_dead = True
+        return
+
+    body_list_one.append((snake_one_pos_x, snake_one_pos_y))
+    
+    if (food_pos_x == snake_one_pos_x and food_pos_y == snake_one_pos_y):
+        while((food_pos_x, food_pos_y) in body_list_one):
+            food_pos_x, food_pos_y = random.randrange(0, win_width) // 10 * 10, random.randrange(0, win_height) // 10 * 10
+    else:
+        del body_list_one[0] #elements will constantly appent to bodylist, however, the last added element will always be removed if the location of the snake does not match with the food location
+
+    win_display.fill(COLOR["black"])
+    score_count = font.render("score: " + str(len(body_list_one)), True, COLOR["white"])
+    win_display.blit(score_count, [0, 0])
+    pygame.draw.rect(win_display, (COLOR["red"]), [food_pos_x, food_pos_y, fruit_width, fruit_height])
+    for (i,j) in body_list_one:
+        pygame.draw.rect(win_display, (COLOR["white"]), [i, j, snake_width, snake_height])
+    pygame.display.update()
+
+
+while True: 
+    if snake_is_dead:
+        win_display.fill(COLOR["black"])
+        score_count = font.render("score: " + str(len(body_list_one)), True, COLOR["white"])
+        win_display.blit(score_count, [0, 0])
+
+        lose_msg = font.render("GAME OVER", True, COLOR["white"])
+        win_display.blit(lose_msg, [win_width // 3, win_height // 3])
+        pygame.display.update()
+        pygame.time.delay(2000)
+
+        pygame.quit()
+        quit()
+
+    events = pygame.event.get()
+    for i in events:
+        if (i.type == pygame.QUIT):
+            pygame.quit()
+            quit()
+        if(i.type == pygame.KEYDOWN):
+            match i.key:
+                case pygame.K_LEFT:
+                    if displace_one_x != 10:
+                        displace_one_x = -10
+                    displace_one_y = 0
+
+                case pygame.K_RIGHT:
+                    if displace_one_x != -10:
+                        displace_one_x = 10
+                    displace_one_y = 0
+
+                case pygame.K_UP:
+                    displace_one_x = 0
+                    if displace_one_y != 10:
+                        displace_one_y = -10
+
+                case pygame.K_DOWN:
+                    displace_one_x = 0
+                    if displace_one_y != -10:
+                        displace_one_y = 10
+                case _:
+                    continue
+            snake_one()
+    if (not events):
+        snake_one()
+
+    clock.tick(10)
