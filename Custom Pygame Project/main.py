@@ -29,6 +29,10 @@ def show_score():
     score_count = font.render("score: " + str(len(snake1.body_list)), True, COLOR["white"])
     win_display.blit(score_count, [0, 0])
 
+def show_lose_message():
+    lose_msg = font.render("GAME OVER", True, COLOR["white"])
+    win_display.blit(lose_msg,  [win_width // 3, win_height // 3])
+
 class food:
     def __init__(self, food_x, food_y):
         self.pos_x = food_x
@@ -86,6 +90,7 @@ def main():
         if game_end:
             fill_background()
             show_score()
+            show_lose_message()
             
             pygame.display.update()
             pygame.time.delay(2000)
