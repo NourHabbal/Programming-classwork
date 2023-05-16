@@ -72,7 +72,7 @@ class snake: #note:
         pygame.display.update()
             # elements will constantly appent to bodylist, however, the last added element will always be 
             # removed if the location of the snake does not match with the food location
-    def auto_x(self, target_x):
+    def auto_x(self, target_x, num_ref):
         self.num = 0
         if target_x > self.pos_x:
             self.num = 10
@@ -80,8 +80,10 @@ class snake: #note:
             self.num = -10
         else:
             pass
+        if self.num == num_ref:
+                self.num = -num_ref
         return self.num
-    def auto_y(self, target_y):
+    def auto_y(self, target_y, num_ref):
         self.num = 0
         if target_y > self.pos_y:
             self.num = 10
@@ -89,11 +91,22 @@ class snake: #note:
             self.num = -10
         else:
             pass
+        if self.num == num_ref:
+                self.num = -num_ref
         return self.num
 
     def move_auto(self, target_x, target_y):
-        self.displace_x = self.auto_x(target_x)
-        self.displace_y = self.auto_y(target_y)
+        self.displace_x = self.auto_x(target_x, self.displace_x)
+        self.displace_y = self.auto_y(target_y, self.displace_y)
+
+        move_h = random.choice([True, False])
+        match move_h:
+            case True:
+                self.displace_y = 0
+            case False:
+                self.displace_x = 0
+            case _:
+                pass
 
         if self.displace_x == 0 and self.displace_y == 0:
             match random.choice([True, False]):
@@ -109,22 +122,14 @@ class snake: #note:
                             self.displace_y = 10
                         case False:
                             self.displace_y = -10
-                    
-        move_h = random.choice([True, False])
-        match move_h:
-            case True:
-                self.displace_y = 0
-            case False:
-                self.displace_x = 0
-            case _:
-                pass
-        #global game_end
+        
+        global game_end
         self.pos_x = (self.pos_x + self.displace_x) % win_width
         self.pos_y = (self.pos_y + self.displace_y) % win_height
         print(self.displace_x, self.displace_y)
-        #if((self.pos_x, self.pos_y) in self.body_list):
-        #    game_end = True
-        #    return
+        if((self.pos_x, self.pos_y) in self.body_list):
+            game_end = True
+            return
         self.body_list.append((self.pos_x, self.pos_y))
         
         if (target_x == self.pos_x and target_y == self.pos_y):
@@ -158,7 +163,7 @@ snake1 = snake(get_num_within_range("x"), get_num_within_range("y"))
 snake2 = snake(get_num_within_range("x"), get_num_within_range("y"))
 
 SNAKE_2_TIMER = pygame.USEREVENT + 1
-pygame.time.set_timer(SNAKE_2_TIMER, 500)
+pygame.time.set_timer(SNAKE_2_TIMER, 125)
 
 red_dot = food(get_num_within_range("x"), get_num_within_range("y"))
 
