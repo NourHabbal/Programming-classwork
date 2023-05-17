@@ -50,123 +50,87 @@ class snake: #note:
         self.displace_x = 10
         self.displace_y = 0
         self.body_list = [(self.pos_x, self.pos_y)]
-    def handle_snake(self, target_x, target_y):
-        global game_end
-        self.pos_x = (self.pos_x + self.displace_x) % win_width
-        self.pos_y = (self.pos_y + self.displace_y) % win_height
-        if((self.pos_x, self.pos_y) in self.body_list):
-            game_end = True
-            return
-        self.body_list.append((self.pos_x, self.pos_y))
-
-        if (target_x == self.pos_x and target_y == self.pos_y):
-            red_dot.reset_position()
-        else:
-            del self.body_list[0]
-        
-        #fill_background()
-        show_score()
-        red_dot.draw_food()
-        for (i,j) in self.body_list:
-            pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
-        pygame.display.update()
-            # elements will constantly appent to bodylist, however, the last added element will always be 
-            # removed if the location of the snake does not match with the food location
-    def auto_x(self, target_x, num_ref):
-        self.num = 0
-        if target_x > self.pos_x:
-            self.num = 10
+        self.last_turned = 0
+        self.last_displace = "y"
+    def pick_direction(self, target_x, target_y):
+        if target_x == self.pos_x:
+            self.displace_x = 0
+            if target_y > self.pos_y:
+                self.displace_y = 10
+            elif target_y < self.pos_y:
+                self.displace_y = -10
+        elif target_x > self.pos_x:
+            self.displace_x = 10
         elif target_x < self.pos_x:
-            self.num = -10
+            self.displace_x = -10
         else:
-            pass
-        if self.num == num_ref:
-                self.num = -num_ref
-        return self.num
-    def auto_y(self, target_y, num_ref):
-        self.num = 0
-        if target_y > self.pos_y:
-            self.num = 10
-        elif target_y < self.pos_y:
-            self.num = -10
-        else:
-            pass
-        if self.num == num_ref:
-                self.num = -num_ref
-        return self.num
+            self.displace_x = 10
+            self.displace_y = 0
+        print(self.displace_x, self.displace_y)
+    
+    def handle_snake(self, target_x, target_y, snake_type):
+        global game_end
+        show_score()
+        match snake_type:
+            case "AI":
+                self.pick_direction(target_x, target_y)
+                if random.randint(0,2):
+                    if self.displace_x != 0:
+                        self.pos_x = (self.pos_x + self.displace_x) % win_width
+                    else:
+                        self.pos_y = (self.pos_y + self.displace_y) % win_height
+                else:
+                    self.pos_x = (self.pos_x + self.displace_x) % win_width
+                    self.pos_y = (self.pos_y + self.displace_y) % win_height
+                if((self.pos_x, self.pos_y) in self.body_list):
+                    game_end = True
+                    return
+                self.body_list.append((self.pos_x, self.pos_y))
+                if (target_x == self.pos_x and target_y == self.pos_y):
+                    red_dot.reset_position()
+                else:
+                    del self.body_list[0]
+                red_dot.draw_food()
+                #print(snake2.pos_x, snake2.pos_y)
+                for (i,j) in self.body_list:
+                    pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
+                pygame.display.update()
+            case "PLAYER":
+                self.pos_x = (self.pos_x + self.displace_x) % win_width
+                self.pos_y = (self.pos_y + self.displace_y) % win_height
+                if((self.pos_x, self.pos_y) in self.body_list):
+                    game_end = True
+                    return
+                self.body_list.append((self.pos_x, self.pos_y))
 
-    def move_auto(self, target_x, target_y):
-        self.displace_x = self.auto_x(target_x, self.displace_x)
-        self.displace_y = self.auto_y(target_y, self.displace_y)
-
-        move_h = random.choice([True, False])
-        match move_h:
-            case True:
-                self.displace_y = 0
-            case False:
-                self.displace_x = 0
+                if (target_x == self.pos_x and target_y == self.pos_y):
+                    red_dot.reset_position()
+                else:
+                    del self.body_list[0]
+                show_score()
+                red_dot.draw_food()
+                #print(snake2.pos_x, snake2.pos_y)
+                for (i,j) in self.body_list:
+                    pygame.draw.rect(win_display, (COLOR["yellow"]), [i, j, base_width, base_height])
+                pygame.display.update()
             case _:
                 pass
+                # elements will constantly appent to bodylist, however, the last added element will always be 
+                # removed if the location of the snake does not match with the food location
 
-        if self.displace_x == 0 and self.displace_y == 0:
-            match random.choice([True, False]):
-                case True:
-                    match random.choice([True, False]):
-                        case True:
-                            self.displace_x = 10
-                        case False:
-                            self.displace_x = -10
-                case False:
-                    match random.choice([True, False]):
-                        case True:
-                            self.displace_y = 10
-                        case False:
-                            self.displace_y = -10
-        
-        global game_end
-        self.pos_x = (self.pos_x + self.displace_x) % win_width
-        self.pos_y = (self.pos_y + self.displace_y) % win_height
-        print(self.displace_x, self.displace_y)
-        if((self.pos_x, self.pos_y) in self.body_list):
-            game_end = True
-            return
-        self.body_list.append((self.pos_x, self.pos_y))
-        
-        if (target_x == self.pos_x and target_y == self.pos_y):
-            red_dot.reset_position()
-        else:
-            del self.body_list[0]
-        #fill_background()
-        show_score()
-        red_dot.draw_food()
-        for (i,j) in self.body_list:
-            pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
-        pygame.display.update()
-            # elements will constantly appent to bodylist, however, the last added element will always be 
-            # removed if the location of the snake does not match with the food location
-
-        #self.handle_snake(red_dot.pos_x, red_dot.pos_y)
-
-
-
-        
 
 COLOR = {
     "white" : (255, 255, 255),
     "black": (0, 0, 0),
-    "red": (255, 0, 0)
+    "red": (255, 0, 0),
+    "yellow": (255, 255, 0)
 }
 
 font = pygame.font.SysFont("bahnschrift", 25) 
 
 snake1 = snake(get_num_within_range("x"), get_num_within_range("y"))
 snake2 = snake(get_num_within_range("x"), get_num_within_range("y"))
-
-SNAKE_2_TIMER = pygame.USEREVENT + 1
-pygame.time.set_timer(SNAKE_2_TIMER, 125)
-
 red_dot = food(get_num_within_range("x"), get_num_within_range("y"))
-
 clock = pygame.time.Clock()
 
 def main():
@@ -182,7 +146,6 @@ def main():
             pygame.quit()
             quit()
         events = pygame.event.get()
-
         for i in events:
             if(i.type == pygame.QUIT):
                 pygame.quit()
@@ -210,14 +173,9 @@ def main():
                             snake1.displace_y = 10
                     case _:
                         continue
-                snake1.handle_snake(red_dot.pos_x, red_dot.pos_y)
-            if (i.type == SNAKE_2_TIMER):
-                #fill_background()
-                snake2.move_auto(red_dot.pos_x, red_dot.pos_y)
-                snake1.handle_snake(red_dot.pos_x, red_dot.pos_y)
-        if(not events):
-            #fill_background()
-            snake1.handle_snake(red_dot.pos_x, red_dot.pos_y)
+        snake1.handle_snake(red_dot.pos_x, red_dot.pos_y, "PLAYER")
+        snake2.handle_snake(red_dot.pos_x, red_dot.pos_y, "AI")
+        fill_background()
         clock.tick(10)
 if __name__ == "__main__":
     main()
