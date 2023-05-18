@@ -16,7 +16,11 @@ def end_game(result):
         case "win":
             fill_background()
             show_score()
-
+            show_win_message()
+            pygame.display.update()
+            pygame.time.delay(2000)
+            pygame.quit()
+            quit()
 
         case "lose":
             fill_background()
@@ -51,6 +55,10 @@ def show_score():
 def show_lose_message():
     lose_msg = font.render("GAME OVER", True, COLOR["white"])
     win_display.blit(lose_msg,  [win_width // 3, win_height // 3])
+
+def show_win_message():
+    win_msg = font.render("YOU WIN!", True, COLOR["white"])
+    win_display.blit(win_msg,  [win_width // 3, win_height // 3])
 
 class food:
     def __init__(self, food_x, food_y):
@@ -128,16 +136,12 @@ class snake: #note:
                 else:
                     self.pos_x = (self.pos_x + self.displace_x) % win_width
                     self.pos_y = (self.pos_y + self.displace_y) % win_height
-                #if((self.pos_x, self.pos_y) in self.body_list):
-                    #game_end = True
-                #    return
                 self.body_list.append((self.pos_x, self.pos_y))
                 if (target_x == self.pos_x and target_y == self.pos_y):
                     red_dot.reset_position("AI")
                 else:
                     self.remove_newest_element()
                 red_dot.draw_food()
-                #print(snake2.pos_x, snake2.pos_y)
                 for (i,j) in self.body_list:
                     try: 
                         if (i,j) != snake1.body_list[-1]:
@@ -157,9 +161,6 @@ class snake: #note:
 
                 self.pos_x = (self.pos_x + self.displace_x) % win_width
                 self.pos_y = (self.pos_y + self.displace_y) % win_height
-                #if((self.pos_x, self.pos_y) in self.body_list):
-                    #game_end = True
-                #    return
                 self.body_list.append((self.pos_x, self.pos_y))
 
                 if (target_x == self.pos_x and target_y == self.pos_y):
@@ -167,7 +168,6 @@ class snake: #note:
                 else:
                     self.remove_newest_element()
                 show_score()
-                #print(snake2.pos_x, snake2.pos_y)
                 for (i,j) in self.body_list:
                     pygame.draw.rect(win_display, (COLOR["yellow"]), [i, j, base_width, base_height])
                 pygame.display.update()
