@@ -10,8 +10,27 @@ win_width, win_height = 400, 400
 win_display = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("snake game 2.0")
 
-game_end = False
+
+def end_game(result):
+    match result:
+        case "win":
+            fill_background()
+            show_score()
+
+
+        case "lose":
+            fill_background()
+            show_score()
+            show_lose_message()
+
+            pygame.display.update()
+            pygame.time.delay(2000)
+
+            pygame.quit()
+            quit()
+
 base_width, base_height = 10, 10
+give_length = [True, True]
 
 def get_num_within_range(axis):
     num = 0
@@ -37,8 +56,21 @@ class food:
     def __init__(self, food_x, food_y):
         self.pos_x = food_x
         self.pos_y = food_y
-    def reset_position(self):
+    def reset_position(self, eaten_by):
         self.pos_x, self.pos_y = get_num_within_range("x"), get_num_within_range("y")
+        global game_end
+        match eaten_by:
+            case "AI":
+                try: 
+                    del snake1.body_list[0]
+                except:
+                    end_game("lose")
+            case "PLAYER":
+                try: 
+                    del snake2.body_list[0]
+                except:
+                    end_game("win")
+                    
     def draw_food(self):
         global base_width, base_height
         pygame.draw.rect(win_display, (COLOR["red"]), [self.pos_x, self.pos_y, base_width, base_height])
@@ -72,13 +104,21 @@ class snake: #note:
         else:
             self.displace_x = 10
             self.displace_y = 0
-        #print(self.displace_x, self.displace_y)
-    
+    def remove_newest_element(self):
+        del self.body_list[0]
+
     def handle_snake(self, target_x, target_y, snake_type):
         global game_end
         show_score()
         match snake_type:
             case "AI":
+                if give_length[1]:
+                    self.element = self.pos_x
+                    for i in range(5):
+                        self.body_list.append((self.element - 1, self.pos_y))
+                        self.element = self.element - 1
+                give_length[1] = False
+
                 self.pick_direction(target_x, target_y)
                 if random.choice([True, False, False, False]):
                     if self.displace_x != 0:
@@ -93,15 +133,28 @@ class snake: #note:
                 #    return
                 self.body_list.append((self.pos_x, self.pos_y))
                 if (target_x == self.pos_x and target_y == self.pos_y):
-                    red_dot.reset_position()
+                    red_dot.reset_position("AI")
                 else:
-                    del self.body_list[0]
+                    self.remove_newest_element()
                 red_dot.draw_food()
                 #print(snake2.pos_x, snake2.pos_y)
                 for (i,j) in self.body_list:
-                    pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
+                    try: 
+                        if (i,j) != snake1.body_list[-1]:
+                            pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
+                        else:
+                            pygame.draw.rect(win_display, (COLOR["orange"]), [i, j, base_width, base_height])
+                    except:
+                        game_end = True
                 pygame.display.update()
             case "PLAYER":
+                if give_length[0]:
+                    self.element = self.pos_x
+                    for i in range(5):
+                        self.body_list.append((self.element - 1, self.pos_y))
+                        self.element = self.element - 1
+                give_length[0] = False
+
                 self.pos_x = (self.pos_x + self.displace_x) % win_width
                 self.pos_y = (self.pos_y + self.displace_y) % win_height
                 #if((self.pos_x, self.pos_y) in self.body_list):
@@ -110,9 +163,9 @@ class snake: #note:
                 self.body_list.append((self.pos_x, self.pos_y))
 
                 if (target_x == self.pos_x and target_y == self.pos_y):
-                    red_dot.reset_position()
+                    red_dot.reset_position("PLAYER")
                 else:
-                    del self.body_list[0]
+                    self.remove_newest_element()
                 show_score()
                 #print(snake2.pos_x, snake2.pos_y)
                 for (i,j) in self.body_list:
@@ -129,7 +182,8 @@ COLOR = {
     "white" : (255, 255, 255),
     "black": (0, 0, 0),
     "red": (255, 0, 0),
-    "yellow": (255, 255, 0)
+    "yellow": (255, 255, 0),
+    "orange": (255, 127, 0)
 }
 
 font = pygame.font.SysFont("bahnschrift", 25) 
@@ -179,25 +233,14 @@ def get_keys():
 
 def main():
     while True:
-        if game_end:
-            fill_background()
-            show_score()
-            show_lose_message()
-            
-            pygame.display.update()
-            pygame.time.delay(2000)
-
-            pygame.quit()
-            quit()
         for i in pygame.event.get():
             if (i.type == pygame.QUIT):
                 pygame.quit()
                 quit()
         get_keys()
-
+        fill_background()
         snake1.handle_snake(red_dot.pos_x, red_dot.pos_y, "PLAYER")
         snake2.handle_snake(red_dot.pos_x, red_dot.pos_y, "AI")
-        fill_background()
         clock.tick(10)
 if __name__ == "__main__":
     main()
