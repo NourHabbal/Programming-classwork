@@ -122,7 +122,7 @@ class snake: #note:
             case "AI":
                 if give_length[1]:
                     self.element = self.pos_x
-                    for i in range(5):
+                    for i in range(2):
                         self.body_list.append((self.element - 1, self.pos_y))
                         self.element = self.element - 1
                 give_length[1] = False
@@ -149,7 +149,7 @@ class snake: #note:
                         else:
                             pygame.draw.rect(win_display, (COLOR["orange"]), [i, j, base_width, base_height])
                     except:
-                        game_end = True
+                        end_game("lose")
                 pygame.display.update()
             case "PLAYER":
                 if give_length[0]:
@@ -169,7 +169,10 @@ class snake: #note:
                     self.remove_newest_element()
                 show_score()
                 for (i,j) in self.body_list:
-                    pygame.draw.rect(win_display, (COLOR["yellow"]), [i, j, base_width, base_height])
+                    try: 
+                        pygame.draw.rect(win_display, (COLOR["yellow"]), [i, j, base_width, base_height])
+                    except:
+                        end_game("win")
                 pygame.display.update()
                 red_dot.draw_food()
             case _:
