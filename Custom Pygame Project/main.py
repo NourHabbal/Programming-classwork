@@ -169,7 +169,11 @@ class snake: #note:
                     self.remove_newest_element()
                 show_score()
                 for (i,j) in self.body_list:
+<<<<<<< Updated upstream
                     try: 
+=======
+                    try:
+>>>>>>> Stashed changes
                         pygame.draw.rect(win_display, (COLOR["yellow"]), [i, j, base_width, base_height])
                     except:
                         end_game("win")
