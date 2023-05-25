@@ -75,9 +75,16 @@ class food:
                     end_game("lose")
             case "PLAYER":
                 try: 
-                    del snake2.body_list[0]
+                    if len(snake2.body_list) > 1:
+                        del snake2.body_list[0]
+                    else:
+                        end_game("win")
+                        #snake2.body_list = []
+
                 except:
-                    end_game("win")
+                    pygame.quit()
+                    quit()
+                    #end_game("win")
                     
     def draw_food(self):
         global base_width, base_height
@@ -169,11 +176,7 @@ class snake: #note:
                     self.remove_newest_element()
                 show_score()
                 for (i,j) in self.body_list:
-<<<<<<< Updated upstream
                     try: 
-=======
-                    try:
->>>>>>> Stashed changes
                         pygame.draw.rect(win_display, (COLOR["yellow"]), [i, j, base_width, base_height])
                     except:
                         end_game("win")
