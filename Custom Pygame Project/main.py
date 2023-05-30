@@ -1,9 +1,17 @@
 import pygame
 import random
 
+# GAME NAME -- SNAKE 2.0
+
 pygame.init()
 
 # i love classes now.
+
+player_dot_count = 0
+START_AI = False
+spawn_AI_at_player_dot = 5
+AI_START_HP = 5
+PLAYER_START_HP = 0
 
 win_width, win_height = 400, 400
 
@@ -49,8 +57,8 @@ def fill_background():
     win_display.fill(COLOR["black"])
 
 def show_score():
-    score_count = font.render("score: " + str(len(snake1.body_list)), True, COLOR["white"])
-    win_display.blit(score_count, [0, 0])
+    HP = font.render("HP: " + str(len(snake1.body_list)), True, COLOR["white"])
+    win_display.blit(HP, [0, 0])
 
 def show_lose_message():
     lose_msg = font.render("GAME OVER", True, COLOR["white"])
@@ -66,7 +74,7 @@ class food:
         self.pos_y = food_y
     def reset_position(self, eaten_by):
         self.pos_x, self.pos_y = get_num_within_range("x"), get_num_within_range("y")
-        global game_end
+        global START_AI
         match eaten_by:
             case "AI":
                 try: 
@@ -74,11 +82,20 @@ class food:
                 except:
                     end_game("lose")
             case "PLAYER":
+                global player_dot_count
                 try: 
                     if len(snake2.body_list) > 1:
                         del snake2.body_list[0]
                     else:
-                        end_game("win")
+                        player_dot_count += 1
+                        if (player_dot_count <= spawn_AI_at_player_dot) and START_AI == False:
+                            if player_dot_count == spawn_AI_at_player_dot:
+                                START_AI = True
+                            else:
+                                pass
+                            
+                        elif START_AI == True:
+                            end_game("win")
                         #snake2.body_list = []
 
                 except:
@@ -123,45 +140,47 @@ class snake: #note:
         del self.body_list[0]
 
     def handle_snake(self, target_x, target_y, snake_type):
-        global game_end
+        global START_AI
         show_score()
         match snake_type:
             case "AI":
-                if give_length[1]:
-                    self.element = self.pos_x
-                    for i in range(2):
-                        self.body_list.append((self.element - 1, self.pos_y))
-                        self.element = self.element - 1
-                give_length[1] = False
-
-                self.pick_direction(target_x, target_y)
-                if random.choice([True, False, False, False]):
-                    if self.displace_x != 0:
-                        self.pos_x = (self.pos_x + self.displace_x) % win_width
-                    else:
-                        self.pos_y = (self.pos_y + self.displace_y) % win_height
-                else:
-                    self.pos_x = (self.pos_x + self.displace_x) % win_width
-                    self.pos_y = (self.pos_y + self.displace_y) % win_height
-                self.body_list.append((self.pos_x, self.pos_y))
-                if (target_x == self.pos_x and target_y == self.pos_y):
-                    red_dot.reset_position("AI")
-                else:
-                    self.remove_newest_element()
-                red_dot.draw_food()
-                for (i,j) in self.body_list:
-                    try: 
-                        if (i,j) != snake1.body_list[-1]:
-                            pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
+                if START_AI == True:
+                    if give_length[1]:
+                        self.element = self.pos_x
+                        for i in range(AI_START_HP):
+                            self.body_list.append((self.element - 1, self.pos_y))
+                            self.element = self.element - 1
+                    give_length[1] = False
+                
+                    self.pick_direction(target_x, target_y)
+                    if random.choice([True, False, False, False]):
+                        if self.displace_x != 0:
+                            self.pos_x = (self.pos_x + self.displace_x) % win_width
                         else:
-                            pygame.draw.rect(win_display, (COLOR["orange"]), [i, j, base_width, base_height])
-                    except:
-                        end_game("lose")
+                            self.pos_y = (self.pos_y + self.displace_y) % win_height
+                    else:
+                        self.pos_x = (self.pos_x + self.displace_x) % win_width
+                        self.pos_y = (self.pos_y + self.displace_y) % win_height
+                    self.body_list.append((self.pos_x, self.pos_y))
+                    if (target_x == self.pos_x and target_y == self.pos_y):
+                        red_dot.reset_position("AI")
+                    else:
+                        self.remove_newest_element()
+                    red_dot.draw_food()
+                
+                    for (i,j) in self.body_list:
+                        try: 
+                            if (i,j) != snake1.body_list[-1]:
+                                pygame.draw.rect(win_display, (COLOR["white"]), [i, j, base_width, base_height])
+                            else:
+                                pygame.draw.rect(win_display, (COLOR["orange"]), [i, j, base_width, base_height])
+                        except:
+                            end_game("lose")
                 pygame.display.update()
             case "PLAYER":
                 if give_length[0]:
                     self.element = self.pos_x
-                    for i in range(5):
+                    for i in range(PLAYER_START_HP):
                         self.body_list.append((self.element - 1, self.pos_y))
                         self.element = self.element - 1
                 give_length[0] = False
@@ -205,7 +224,7 @@ clock = pygame.time.Clock()
 
 def get_keys():
     keys = pygame.key.get_pressed()
-
+    #keybinds organized in a way diagonal movement is allowed
     if keys[pygame.K_LEFT]:
         snake1.displace_x = -10
         if keys[pygame.K_UP]:
@@ -240,8 +259,8 @@ def get_keys():
             snake1.displace_x = 0
 
 
-
 def main():
+    global START_AI
     while True:
         for i in pygame.event.get():
             if (i.type == pygame.QUIT):
@@ -251,12 +270,14 @@ def main():
         fill_background()
         snake1.handle_snake(red_dot.pos_x, red_dot.pos_y, "PLAYER")
         snake2.handle_snake(red_dot.pos_x, red_dot.pos_y, "AI")
+            
         clock.tick(10)
 if __name__ == "__main__":
     main()
 
 
 """
+initial idea
 check inputs and update them globally (snake positions)
 with or without input, call snake() function
 
