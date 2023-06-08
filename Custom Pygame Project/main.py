@@ -153,7 +153,7 @@ class snake: #note:
                     give_length[1] = False
                 
                     self.pick_direction(target_x, target_y)
-                    if random.choice([True, False, False, False]):
+                    if random.choice([True, False, False, False, False, False]):
                         if self.displace_x != 0:
                             self.pos_x = (self.pos_x + self.displace_x) % win_width
                         else:
