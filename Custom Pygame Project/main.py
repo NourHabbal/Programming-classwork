@@ -1,16 +1,16 @@
 import pygame
 import random
 
-# GAME NAME -- SNAKE 2.0
+# GAME NAME -- snake (but better)
 
 pygame.init()
 
-# i love classes now.
+# redo how the red dot's position is determined
 
 player_dot_count = 0
 START_AI = False
-spawn_AI_at_player_dot = 5
-AI_START_HP = 5
+spawn_AI_at_player_dot = 3
+AI_START_HP = 1
 PLAYER_START_HP = 0
 
 win_width, win_height = 400, 400
@@ -96,12 +96,12 @@ class food:
                             
                         elif START_AI == True:
                             end_game("win")
-                        
+                        #snake2.body_list = []
 
                 except:
                     pygame.quit()
                     quit()
-                    
+                    #end_game("win")
                     
     def draw_food(self):
         global base_width, base_height
@@ -277,19 +277,19 @@ if __name__ == "__main__":
 
 
 """
-initial idea based off tutorial used
+initial idea
 check inputs and update them globally (snake positions)
 with or without input, call snake() function
 
 constantly update snake position
-check if current snake position is in the body list (previous snake positions), if true, kill the snake, if false, continue through code [removed]
-append the current snake position into the body list
-check if current snake position is the same as the red dot's position, if yes, keep updating the red dot's position while it's location continues to match with any elements [modified] 
+check if current snake position is in the body list (previous snake positions), if true, kill the snake, if false, continue through code
+append the current snake position in into the body list
+check if current snake position is the same as the red dot's position, if yes, keep updating the red dot's position while it's location continues to match with any elements. 
     if no, just delete the last added element in the body list
 fill the background with blit function (black background)
-render score count text [modified]
+render score count text
 render the red dot AKA food
-render every location in body list by interating with (i,j) with rect
+render every location in body list by interrating with (i,j) with rect
 update the display
 
 """
