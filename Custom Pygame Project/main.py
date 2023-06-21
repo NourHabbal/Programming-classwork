@@ -1,16 +1,14 @@
 import pygame
 import random
 
-# GAME NAME -- snake (but better)
+
 
 pygame.init()
-
-# redo how the red dot's position is determined
 
 player_dot_count = 0
 START_AI = False
 spawn_AI_at_player_dot = 3
-AI_START_HP = 1
+AI_START_HP = 3
 PLAYER_START_HP = 0
 
 win_width, win_height = 400, 400
