@@ -1,46 +1,51 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import messagebox
 
-
-"""
-text_label = Label(root, text="BONJ")
-
-text_label.pack(padx=20, pady=20)
-
-text_entry = Entry(root)
-text_box = Text(root, height=5)
-text_box.pack(padx=30)
-btn1 = Button(root, text= "press this button")
-btn1.pack(padx=15, pady=15)
-
-check_btn1 = Checkbutton(root)
-check_btn1.pack()
-
-todo_frame = Frame(root)
-todo_frame.columnconfigure(0, weight=1)
-todo_frame.columnconfigure(1, weight=1)
-todo_frame.columnconfigure(2, weight=1)
-todo_frame.columnconfigure(3 , weight=1)
-
-box_1 = Button(todo_frame, text= "1")
-box_1.grid(row=0, column=0, sticky=W+E)
-
-box_2 = Button(todo_frame, text= "2")
-box_2.grid(row=0, column=1, sticky=W+E)
-
-
-todo_frame.pack(fill="x", padx= 20)
-"""
 class test_GUI:
     def __init__(self):
-        self.root = Tk()
-        self.label = Label(self.root, text="E")
+        self.root = tk.Tk()
+        
+        self.menubar = tk.Menu(self.root)
+        self.filemenu = tk.Menu(self.menubar, tearoff=0)
+        self.filemenu.add_command(label="Close this weird program", command= exit)
+
+        self.menubar.add_cascade(menu=self.filemenu, label="File I guess?")
+
+        self.root.config(menu=self.menubar)
+
+        self.label = tk.Label(self.root, text="E")
         self.label.pack(padx=20, pady=20)
 
-        self.textbox = Text(self.root, height=4)
+        self.textbox = tk.Text(self.root, height=4)
+        self.textbox.bind("<KeyPress>", self.shortcut)
         self.textbox.pack(padx=10, pady=10)
-        self.check = Checkbutton(self.root, text="show")
+
+        self.check_state = tk.IntVar()
+        
+        self.check = tk.Checkbutton(self.root, text="display in terminal", variable= self.check_state)
         self.check.pack(padx= 10, pady=10)
+
+        self.button = tk.Button(self.root, text="show text content as message", command= self.show_message)
+        self.button.pack()
+
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
+    
+    def show_message(self):
+        if (self.check_state.get()):
+            print(self.textbox.get('1.0', tk.END))
+        else:
+            messagebox.showinfo(title="Message", message=self.textbox.get('1.0', tk.END))
+    def shortcut(self, event):
+        if event.state == 12 and event.keysym == "Return":
+            self.show_message()
+    
+    def shortcut(self, event):
+        if event.state == 12 and event.keysym == "Return":
+            print("H")
+    def on_closing(self):
+        messagebox.showinfo(title="Message", message="Bye byeee")
+        self.root.destroy()
 
 test_GUI()
 
