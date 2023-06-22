@@ -1,5 +1,14 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
+
+"""
+Note: This is based off the given tutorial: https://youtu.be/ibf5cx221hk
+The theme used is the forest theme by rdbende: https://github.com/rdbende/Forest-ttk-theme
+
+
+"""
+
 
 class test_GUI:
     def __init__(self):
@@ -10,7 +19,10 @@ class test_GUI:
         self.filemenu.add_command(label="Do something I guess", command= self.do_something)
         self.filemenu.add_command(label="Do something else", command=self.do_something_else)
 
-
+        self.root.tk.call('source', 'forest-dark.tcl')
+        self.style = ttk.Style(self.root)
+# Set the theme with the theme_use method
+        self.style.theme_use('forest-dark')
 
         self.menubar.add_cascade(menu=self.filemenu, label="Some Menu")
 
@@ -26,7 +38,6 @@ class test_GUI:
         self.text2.pack(padx=10,pady=10)
 
         self.textbox = tk.Text(self.root, height=4)
-        #self.textbox.bind("<KeyPress>", self.shortcut)
         self.textbox.pack(padx=10, pady=10)
 
         self.check_state = tk.IntVar()
@@ -59,11 +70,3 @@ class test_GUI:
         messagebox.showerror(title="?", message="the statement below is False\n\nthe statement above is True")
 
 test_GUI()
-
-"""TUTORIAL:
-Tkinter Beginner Course - Python GUI Development
-https://youtu.be/ibf5cx221hk
-
-
-"""
-
