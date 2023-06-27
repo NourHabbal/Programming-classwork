@@ -19,10 +19,10 @@ class test_GUI:
         self.filemenu.add_command(label="Do something I guess", command= self.do_something)
         self.filemenu.add_command(label="Do something else", command=self.do_something_else)
 
-        self.root.tk.call('source', 'forest-dark.tcl')
-        self.style = ttk.Style(self.root)
+        #self.root.tk.call('source', 'forest-dark.tcl')
+        #self.style = ttk.Style(self.root)
 # Set the theme with the theme_use method
-        self.style.theme_use('forest-dark')
+        #self.style.theme_use('forest-dark')
 
         self.menubar.add_cascade(menu=self.filemenu, label="Some Menu")
 
